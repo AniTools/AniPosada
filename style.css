@@ -1,0 +1,73 @@
+    /* Custom CSS for fonts, animations, and new theme */
+    :root {
+        /* High-contrast dark theme */
+        --bg-dark: #121212;
+        --text-dark: #EAEAEA;
+        --accent-gold: #D4AF37; 
+        --card-bg: #1F1F1F;
+        --border-color: #333;
+    }
+
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-dark);
+    }
+
+    h1, h2, h3, .font-display {
+        font-family: 'Playfair Display', serif;
+    }
+
+    .font-sans-bold {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+    }
+
+    /* Golden Title Effect */
+    .golden-title {
+        color: var(--accent-gold);
+    }
+
+    /* Language Switcher: Hide inactive language */
+    [data-lang="es"] { display: none; }
+    html[lang="es"] [data-lang="en"] { display: none; }
+    html[lang="es"] [data-lang="es"] { display: block; }
+
+    /* Scroll-triggered fade-in animation */
+    .fade-in-section {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+
+    .fade-in-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Hero background image */
+    #hero {
+        background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://dl.dropboxusercontent.com/scl/fi/ebkyucwavupe4ss01r07g/DSC_0094.jpg?rlkey=37atishl4s0ptf2w8lipfi5ao&st=18hv2nv4');
+        background-size: cover;
+        background-position: center;
+    }
+
+    /* Mobile Menu */
+    #mobile-menu {
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    /* Service Card Hover Effect */
+    .service-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    .service-card .service-icon {
+        transition: transform 0.3s ease;
+    }
+    .service-card:hover .service-icon {
+        transform: scale(1.1);
+    }

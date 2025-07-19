@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AniPosada</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 481.13 432.43'%3E%3Cpath d='M428.07,216.8c-33.86,26.72-80.04,27.63-121.3,24.56,11.66,31.96,21.83,64.63,33.94,96.42,8.23,21.58,16.95,41.41,41.18,48.73,3.47,1.05,15.14,1.67,15.83,2.15,1.44.99,1.44,4.11,0,5.1l-127.92,1.01c-1.32-1.33-3.1-4.78-1.05-6.1,1.03-.66,14.82-1.81,18.81-3.17,21.76-7.44,13.97-40.34,8.5-57.01-15.5-47.15-61.96-81.91-108.18-95.62-4.87-1.44-32.87-9.05-35.07-5.9-1.9,6.96-5.06,13.44-7.63,20.14-10.32,26.92-33.36,79.6-31.26,106.68,2.05,26.43,20.53,32.54,43.98,34.44v5.99s-120.88,0-120.88,0l.96-4.53c42.59-5.88,54.66-48.28,68.46-82.39,11.06-27.34,21.45-55.29,31.48-82.9-23.15.1-45.06,4.25-64.84,16.57-22.49,14-49.86,47.75-36.8,75.58,2.89,6.16,10.42,7.89,12.26,10.72,3.91,5.99-12.26,1.21-14.83-.15-31.55-16.66-13.02-61.12,5.8-80.76,25.91-27.03,66.25-35.56,102.4-30.95,13.06-35.72,27.55-70.97,40.75-106.63,3.91-10.58,14.88-35.37,16.13-44.81,2.68-20.27-16.89-18.96-31.3-22.29l-.59-4.09h195.3c90.65.92,138.01,122.3,65.87,179.24ZM280.34,46.18c-14.81.92-27.4-.45-29.4,17.98-2.62,24.16,18.49,74.64,27.37,99.26,7.9,21.89,16.6,43.57,24.39,65.52.87,1.3,2.14,1.3,3.51,1.48,11.78,1.59,37.91.07,49.88-2.16,45.9-8.57,63.35-46.73,62.62-90.33-1.38-82.93-69.48-96.01-138.38-91.74ZM209.85,78.52l-51.94,137.86c31.62,3.28,62.3,14.39,89.05,31.34l29.84,22.6-66.94-191.8Z'/%3E%3C/svg%3E">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 p-4 transition-all duration-300 bg-transparent" id="main-header">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="block w-12 h-auto text-white hover:text-[var(--accent-gold)] transition-colors">
+                <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 481.13 432.43">
+                    <path fill="currentColor" d="M428.07,216.8c-33.86,26.72-80.04,27.63-121.3,24.56,11.66,31.96,21.83,64.63,33.94,96.42,8.23,21.58,16.95,41.41,41.18,48.73,3.47,1.05,15.14,1.67,15.83,2.15,1.44.99,1.44,4.11,0,5.1l-127.92,1.01c-1.32-1.33-3.1-4.78-1.05-6.1,1.03-.66,14.82-1.81,18.81-3.17,21.76-7.44,13.97-40.34,8.5-57.01-15.5-47.15-61.96-81.91-108.18-95.62-4.87-1.44-32.87-9.05-35.07-5.9-1.9,6.96-5.06,13.44-7.63,20.14-10.32,26.92-33.36,79.6-31.26,106.68,2.05,26.43,20.53,32.54,43.98,34.44v5.99s-120.88,0-120.88,0l.96-4.53c42.59-5.88,54.66-48.28,68.46-82.39,11.06-27.34,21.45-55.29,31.48-82.9-23.15.1-45.06,4.25-64.84,16.57-22.49,14-49.86,47.75-36.8,75.58,2.89,6.16,10.42,7.89,12.26,10.72,3.91,5.99-12.26,1.21-14.83-.15-31.55-16.66-13.02-61.12,5.8-80.76,25.91-27.03,66.25-35.56,102.4-30.95,13.06-35.72,27.55-70.97,40.75-106.63,3.91-10.58,14.88-35.37,16.13-44.81,2.68-20.27-16.89-18.96-31.3-22.29l-.59-4.09h195.3c90.65.92,138.01,122.3,65.87,179.24ZM280.34,46.18c-14.81.92-27.4-.45-29.4,17.98-2.62,24.16,18.49,74.64,27.37,99.26,7.9,21.89,16.6,43.57,24.39,65.52.87,1.3,2.14,1.3,3.51,1.48,11.78,1.59,37.91.07,49.88-2.16,45.9-8.57,63.35-46.73,62.62-90.33-1.38-82.93-69.48-96.01-138.38-91.74ZM209.85,78.52l-51.94,137.86c31.62,3.28,62.3,14.39,89.05,31.34l29.84,22.6-66.94-191.8Z"/>
+                </svg>
+            </a>
+            <nav class="hidden md:flex items-center space-x-8 text-sm">
+                <a href="#music" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">Music</span><span data-lang="es">Música</span></a>
+                <a href="#videos" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">Videos</span><span data-lang="es">Videos</span></a>
+                <a href="#about" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">About</span><span data-lang="es">Sobre mí</span></a>
+                <a href="#services" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">Services</span><span data-lang="es">Servicios</span></a>
+                <a href="#events" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">Events</span><span data-lang="es">Eventos</span></a>
+                <a href="#contact" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">Contact</span><span data-lang="es">Contacto</span></a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="lang-toggle" class="font-sans-bold text-sm hover:text-[var(--accent-gold)] transition-colors">EN/ES</button>
+                <button id="hamburger-btn" class="md:hidden text-2xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-[var(--card-bg)] shadow-lg z-50 transform translate-x-full md:hidden">
+        <nav class="flex flex-col items-center justify-center h-full space-y-8 text-lg">
+            <a href="#music" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">Music</span><span data-lang="es">Música</span></a>
+            <a href="#videos" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">Videos</span><span data-lang="es">Videos</span></a>
+            <a href="#about" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">About</span><span data-lang="es">Sobre mí</span></a>
+            <a href="#services" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">Services</span><span data-lang="es">Servicios</span></a>
+            <a href="#events" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">Events</span><span data-lang="es">Eventos</span></a>
+            <a href="#contact" class="font-display hover:text-[var(--accent-gold)] transition-colors"><span data-lang="en">Contact</span><span data-lang="es">Contacto</span></a>
+        </nav>
+    </div>
+
+
+    <!-- Hero Section -->
+    <section id="hero" class="h-screen flex flex-col items-center justify-center text-center text-white p-4">
+        <div class="w-full max-w-xl mx-auto mb-4" style="filter: drop-shadow(2px 2px 8px rgba(0,0,0,0.6));">
+            <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790.59 282.35">
+                <path fill="currentColor" d="M714.06,143.3c-.06-3.83,10.64-11.87,11.95-6.42.54,2.26-14.62,36.22-16.42,43.39-7.47,29.69,24.49.83,26.51-10.99l3.95,1.48c-4.47,10.47-23.78,34.33-36.7,28.73-7.38-3.2-3.63-17.14-2.26-23.22-8.67,9.54-19.08,26.56-34.23,23.73-6.16-1.15-8.57-8.12-7.73-13.74-18.41,18.73-36.22,21.46-27.97-11.99-8.66,9.85-19.37,29.37-35.24,25.76-7.84-1.79-6.38-13.8-7.21-13.78-6.88,4.75-16.65,17.38-26.21,13.24-7.66-3.32-3.15-16.9-2.26-23.22-6.42,9.31-24.52,31.87-37.32,21.84-12.78-10.02,4.16-39.99,12.38-49.28,6.86-7.76,22.58-19.24,32.7-11.79,2.55,1.88,3.23,5.34,6.21,5.26,1.08-4.11,5.54-7.57,9.98-6.96.44,1.39.62,2.27.35,3.73-1.58,8.43-9.26,21.48-12.32,30.69-1.41,4.24-8.67,22.9-1.46,23.55,17.43-4.51,20.09-24.56,29.23-37.74,7.14-10.3,20.63-24.75,34.59-19.15,2.75,1.1,4.82,2.66,4.61,5.89.3.31,1.23-.59,1.49-.99,3.69-5.73,8.68-25.38,12.31-33.64,7.07-16.11,24.89-49.94,43.87-53.04,21.59-3.53,4.63,30.93-.71,39.26-19.91,31.04-55.55,52.94-57.96,93.91-.45,7.57,2.33,8.01,8.68,4.67,12.55-6.59,17.32-29.26,26.86-41.07,9.39-11.62,29.81-26.18,40.36-8.08ZM702.95,59.53c-3.41-1.96-5.95-.56-8.99,1.21-10.56,6.14-24.67,36.13-30,47.92-5.84,12.92-11.63,26.84-14.8,40.63l38.34-50.05c7.86-11.81,17.54-24.54,15.45-39.7ZM561.02,138.49c-11.52,1.16-24.32,21.78-28.25,31.8-1.96,4.99-8.61,24.67,2.24,22.31,13.47-2.93,34.78-33.49,33.7-46.84-.31-3.82-3.61-7.68-7.69-7.27ZM700.86,138.48c-14.14,1.57-33.74,37.08-31.67,50.2,1,6.36,5.05,4.84,9.59,2.73,12.51-5.81,32.98-33.57,30.27-47.6-.67-3.49-4.87-5.7-8.19-5.34ZM627.89,139.53c-9.33,1.95-21.02,20.92-24.56,29.38-2.47,5.9-11.08,30.14,3.09,24.06,8.16-3.5,22.1-19.85,26.13-27.81,3.78-7.47,10.59-28.82-4.65-25.63Z"/>
+                <path fill="currentColor" d="M175.6,143.28c8.79,3.71,16.55,2.69,21.49-5.97-.44,11.91-13.88,12.5-23.44,11.04-4.55,22.03-10.52,46.43-5.58,68.92,4.74,21.57,24.97,32,43.48,17.95,2.14,2.31-10.25,8.86-12.01,9.46-9.8,3.33-22.3.69-30.44-5.47-25.5-19.28-13.37-69.36-5.41-95.29l-21-8.19-2.47,1.63c-17.4,27.09-36.42,68.3-71.27,75.62-20.85,4.38-39.78-7.57-38.19-30.2,1.96-27.83,32.87-51.54,58.7-56.19,16.7-3,31.59-.19,47.99,2.53,4.82-8.19,9.9-16.31,15.36-24.1,10.41-14.83,36.46-50.56,53.94-54.94,2.62-.66,5.79-1.78,7.79.8-17.43,28.47-28.27,60.88-38.94,92.4ZM165.6,139.3c7.38-27.21,21.04-52.1,31.97-77.93-23.57,17.79-37.22,45.67-53.92,69.43l21.95,8.49ZM134.64,133.32c-32-8.71-73.67-3.09-91.08,28.29-14.56,26.25.95,49.83,30.83,38.82,28.38-10.46,43.85-43.96,60.25-67.11Z"/>
+                <path fill="currentColor" d="M355.51,149.39c-8.75,25.52-25.05,63.96-52.34,74.02-15.3,5.64-32.06,2.38-25.65-17.17,3.19,1.39.63,4.85,1.2,8.24,1.49,8.83,12.81,8.18,19.47,5.94,33.69-11.34,45.37-81.32,61.49-109.35,1.79-3.12,5.19,2.51,0,0,6.18-11.35,22.85-47.41,36.69-49.27,1.21-.16,3.26.01,4.02,1.07-17.94,18.3-27.61,42.63-36.7,66.2-.9,2.34-6.19,15.26-5.25,16.23,29.88,7.31,60.62-17.86,67.44-45.94,9.87-40.6-22.38-50.27-55.66-43.67-28.66,5.69-63.61,30.05-59.63,63.03,1.68,13.89,16.17,19.97,26.41,9.64l6.45-8.03c-8.92,30.7-42.25,18.05-39.83-11.38,5.39-65.5,149.06-88.33,133.3-10.56-7.13,35.2-46.69,59.39-81.39,50.99Z"/>
+                <path fill="currentColor" d="M507.99,139.6c-3.47-2.81-10.72-1.75-11.67,3.22-3.11,16.24,20.35,31.16,10.17,49.14-7.13,12.6-29.24,14.06-37.18,1.79-7.06-10.9,5.96-18.51,7.89-12.85,1.45,4.25-4.6,5.86.27,12.69,2.01,2.83,4.36,3.55,7.6,4.45,25.8-2.75,4.44-30.64-.27-43.74-2.93,3.47-6.78,7.87-10.55,10.41-2.73,1.83-7.9,3.26-9.88,5.1-3.1,2.87-8.02,13.66-12.52,18.45-9.96,10.58-32.91,20.13-40.87,2.88-9.42-20.43,20.24-64.09,45.35-55.33,12.04,4.2,11.74,17.91,10.5,28.47,6.53-2.44,13.22-9.06,17.32-14.65,3.02-4.12,3.97-8.99,8.65-12.33,12.6-9,31.74.1,21.5,15.53-11.87,1.4-.43-8.47-6.3-13.22ZM449.07,138.51c-13.45,1.28-27.59,30.27-28.7,42.25-.82,8.84.58,17.05,11.41,15.42,15.06-2.26,27.78-33.88,26.54-47.4-.48-5.18-3.14-10.86-9.25-10.28Z"/>
+                <path fill="currentColor" d="M298.65,162.45c.91-.56,4.46-.92,3.81,1.3-1.59,5.39-11.8,20.83-15.92,25.04-5.86,6-21.53,16.39-29.07,9.01-5.02-4.92-1.97-9.82-1.21-15.32.15-1.08,1.1-3.44-.72-3.21-3.5,10.46-17.2,24.4-29.04,20.53-4.19-1.37-5.16-8.14-4.85-11.91.71-8.65,16.58-41.96,15.84-45.01-.24-.99-1.47-1.48-2.47-1.62-11.42-1.63-27.71,25.6-32.62,34.34-2.21,3.92-9.51,21.08-11.3,22.66s-8.82,1.74-9.38-.59c-1.73-7.15,19.57-49.48,20.55-60.1,1.13-2.94,6.44-2.56,7.81-.27,3.53,5.87-9.24,27.89-10.49,34.97,5.15-7.06,9.17-14.83,15-21.45,4.98-5.66,25.51-24.35,31.19-11.27,3.39,7.8-9.37,31.19-12.27,40.17-1.49,4.62-5.06,12.25-.29,15.42,9.22,2.91,22.5-21.1,25.83-27.84,4.21-8.53,7.46-21.12,12.25-28.71,2.11-3.35,5.1-5.38,9.21-3.8,5.53,3.37-4.26,16.56-6.18,20.82-2.58,5.73-5.73,12.49-7.54,18.44-1.57,5.17-6.68,20.52,2.17,20.23,10.53-.34,17.73-11.13,22.94-19.1,1.48-2.26,6.13-12.35,6.74-12.73Z"/>
+                <path fill="currentColor" d="M294.48,102.34c1.14,1.1-7.03,20.64-12.98,17.97.18-9.06,1.82-18.6,12.98-17.97Z"/>
+            </svg>
+        </div>
+        <p class="font-display text-xl md:text-3xl">
+            <span data-lang="en">Singer-Songwriter & Producer</span>
+            <span data-lang="es">Cantautora y Productora</span>
+        </p>
+    </section>
+
+    <main class="container mx-auto px-4 md:px-8">
+
+           <!-- Music Section -->
+           <section id="music" class="fade-in-section my-20 md:my-32">
+            <h2 class="font-display text-4xl md:text-5xl text-center mb-12 golden-title"><span data-lang="en">Music</span><span data-lang="es">Música</span></h2>
+            <div class="bg-[var(--card-bg)] p-2 sm:p-4 rounded-lg shadow-2xl">
+                 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/3y07edW00OFsOMDrDvL5Xk?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </section>
+
+        <!-- Videos Section -->
+        <section id="videos" class="fade-in-section my-20 md:my-32">
+            <h2 class="font-display text-4xl md:text-5xl text-center mb-12 golden-title"><span data-lang="en">Visuals</span><span data-lang="es">Visuales</span></h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="relative overflow-hidden rounded-md border-2 border-[var(--border-color)] shadow-xl" style="padding-top: 56.25%;">
+                    <iframe 
+                        src="https://www.youtube.com/embed/EsezEDYw_lk" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen 
+                        class="absolute top-0 left-0 w-full h-full" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <a href="https://www.youtube.com/@aniposada" target="_blank" rel="noopener noreferrer" class="font-sans-bold uppercase text-base bg-transparent border border-[var(--accent-gold)] text-[var(--accent-gold)] py-3 px-10 rounded-full hover:bg-[var(--accent-gold)] hover:text-[var(--bg-dark)] transition-colors">
+                    <span data-lang="en">See More on YouTube</span>
+                    <span data-lang="es">Ver Más en YouTube</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="fade-in-section my-20 md:my-32">
+            <div class="flex flex-col md:flex-row items-top gap-10 md:gap-16">
+                <div class="w-full md:w-1/2 relative max-w-md mx-auto md:mx-300">
+                     <img src="https://dl.dropboxusercontent.com/scl/fi/sh4fk9xz2657ezwwn6re0/_DSC5943.jpg?rlkey=jqznu1rvgpq8kgdzqlcgjvhyq&raw=1" alt="Aniposada witha guitar" class="rounded-md shadow-2xl w-full h-auto z-10 relative">
+                     <div class="absolute -top-4 -left-4 w-full h-full border-4 border-[var(--accent-gold)] rounded-md z-0"></div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <h2 class="font-display text-4xl md:text-5xl mb-6 golden-title"><span data-lang="en">Who is Ani?</span><span data-lang="es">Quien es Ani?</span></h2>
+                    <div class="text-lg leading-relaxed space-y-4 text-gray-300">
+                        <div data-lang="en">
+                            <p>Ana María Posada, known as Aniposada, is a Colombian singer-songwriter who intricately weaves musical tales that seamlessly blend her Colombian roots with her experiences living in Canada. Since her childhood, she has been composing heartfelt melodies, a journey that culminated in her debut album, "Madeja de Sentimiento" (Tangle of Feelings), recorded in her homeland.</p>
+                            <p class="mt-4">Aniposada's music is a beautiful fusion of her Latino heritage and her international experiences, resonating deeply with audiences worldwide. Drawing inspiration from social causes, spirituality, and love, her songs have the power to touch hearts and inspire change.</p>
+                            <p class="mt-4">Skilled in piano, guitar, and ukulele, Aniposada effortlessly merges these elements into her compositions, creating captivating, sweet and emotive melodies that linger in the soul.</p>
+                            <p class="mt-4">Currently working on new music, Aniposada enchants listeners with her soulful voice and heartfelt lyrics. Stay tuned for the upcoming releases from this musical storyteller.</p>
+                        </div>
+                        <div data-lang="es">
+                            <p>Ana María Posada, conocida como Aniposada, es una cantautora colombiana que teje intrincadas historias musicales que fusionan a la perfección sus raíces colombianas con sus experiencias viviendo en Canadá. Desde su infancia, ha estado componiendo sentidas melodías, un viaje que culminó en su álbum debut, "Madeja de Sentimiento", grabado en su tierra natal.</p>
+                            <p class="mt-4">La música de Aniposada es una hermosa fusión de su herencia latina y sus experiencias internacionales, resonando profundamente con audiencias de todo el mundo. Inspirándose en causas sociales, la espiritualidad y el amor, sus canciones tienen el poder de tocar corazones e inspirar al cambio.</p>
+                            <p class="mt-4">Habilidosa en el piano, la guitarra y el ukelele, Aniposada fusiona sin esfuerzo estos elementos en sus composiciones, creando melodías cautivadoras, dulces y emotivas que perduran en el alma.</p>
+                            <p class="mt-4">Actualmente trabajando en nueva música, Aniposada encanta a los oyentes con su voz conmovedora y sus letras sinceras. Mantente atento a los próximos lanzamientos de esta narradora musical.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+     
+
+        <!-- Photo Gallery Section -->
+        <section id="gallery" class="fade-in-section my-20 md:my-32">
+            <h2 class="font-display text-4xl md:text-5xl text-center mb-12 golden-title"><span data-lang="en">Gallery</span><span data-lang="es">Galería</span></h2>
+            <!-- Elfsight Photo Gallery | AniPosada Gallery -->
+            <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+            <div class="elfsight-app-a5c0263e-bba2-4788-a1ea-1215b354633d" data-elfsight-app-lazy></div>
+        </section>
+
+
+        <!-- Services Section -->
+        <section id="services" class="fade-in-section my-20 md:my-32">
+            <h2 class="font-display text-4xl md:text-5xl text-center mb-12 golden-title">
+                <span data-lang="en">Services</span>
+                <span data-lang="es">Servicios</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="service-card bg-[var(--card-bg)] p-8 rounded-lg text-center border border-[var(--border-color)]">
+                    <div class="service-icon text-4xl text-[var(--accent-gold)] mb-4">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-display mb-3"><span data-lang="en">Live Music for Magical Moments</span><span data-lang="es">Música en Vivo para Momentos Mágicos</span></h3>
+                    <p class="text-gray-400 text-sm">
+                        <span data-lang="en">From cozy restaurants to intimate weddings and private gatherings, I bring heartfelt acoustic performances with just my voice and guitar.</span>
+                        <span data-lang="es">Desde restaurantes acogedores hasta bodas íntimas y reuniones privadas, ofrezco actuaciones acústicas y sentidas solo con mi voz y mi guitarra.</span>
+                    </p>
+                </div>
+                <!-- Service Card 2 -->
+                <div class="service-card bg-[var(--card-bg)] p-8 rounded-lg text-center border border-[var(--border-color)]">
+                    <div class="service-icon text-4xl text-[var(--accent-gold)] mb-4">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3 class="text-xl font-display mb-3"><span data-lang="en">Music Production</span><span data-lang="es">Producción Musical</span></h3>
+                     <p class="text-gray-400 text-sm">
+                        <span data-lang="en">I help you record and produce your songs with care ,from you first idea to finished track.</span>
+                        <span data-lang="es">Te ayudo a grabar y producir tus canciones con esmero, desde la idea inicial hasta la pista final</span>
+                    </p>
+                </div>
+                <!-- Service Card 3 -->
+                <div class="service-card bg-[var(--card-bg)] p-8 rounded-lg text-center border border-[var(--border-color)]">
+                    <div class="service-icon text-4xl text-[var(--accent-gold)] mb-4">
+                        <i class="fas fa-pencil-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-display mb-3"><span data-lang="en">Songwriting & Music Composition</span><span data-lang="es">Composición de Canciones</span></h3>
+                     <p class="text-gray-400 text-sm">
+                        <span data-lang="en">Whether it’s a melody for your next single or a custom piece for film or media, I’ll help you write music that feels honest, moving, and made just for you.</span>
+                        <span data-lang="es">Ya sea una melodía para tu próximo sencillo o una pieza personalizada para cine o medios, te ayudaré a escribir música que se sienta honesta, conmovedora y hecha solo para ti.</span>
+                    </p>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <p class="max-w-2xl mx-auto mb-8 text-gray-300">
+                    <span data-lang="en">Interested in working together? Let's schedule a call to discuss your project.</span>
+                    <span data-lang="es">¿Te interesa que trabajemos juntos? Agendemos una llamada para hablar de tu proyecto.</span>
+                </p>
+                <a href="https://calendar.app.google/G54s9RJ32gTk1sKM9" target="_blank" rel="noopener noreferrer" class="font-sans-bold uppercase text-base bg-[var(--accent-gold)] text-[var(--bg-dark)] py-3 px-10 rounded-full hover:opacity-90 transition-opacity inline-block">
+                    <span data-lang="en">Book a Discovery Call</span>
+                    <span data-lang="es">Agendar Llamada</span>
+                </a>
+            </div>
+        </section>
+        
+        <!-- Events Section -->
+        <!-- <section id="events" class="fade-in-section my-20 md:my-32">
+            <h2 class="font-display text-4xl md:text-5xl text-center mb-12 golden-title">
+                <span data-lang="en">Upcoming Shows</span>
+                <span data-lang="es">Próximos Conciertos</span>
+            </h2>
+            <div id="events-list" class="max-w-4xl mx-auto space-y-6">
+                <!-- Google Calendar events will be loaded here -->
+            <!-- </div>
+        </section> --> 
+
+        <!-- Shop Section
+        <section id="shop" class="fade-in-section my-20 md:my-32 hidden">
+            <h2 class="font-display text-4xl md:text-5xl text-center mb-12 golden-title"><span data-lang="en">Merch</span><span data-lang="es">Tienda</span></h2>
+        </section> -->
+
+        <!-- Contact Section -->
+        <section id="contact" class="fade-in-section my-20 md:my-32 text-center">
+            <h2 class="font-display text-4xl md:text-5xl mb-4 golden-title"><span data-lang="en">Connect</span><span data-lang="es">Conecta</span></h2>
+            <p class="max-w-2xl mx-auto mb-8 text-gray-300">
+                <span data-lang="en">I do music production and live shows. For bookings, collaborations, or other inquiries, please use the form below or call +1 604-725-1561.</span>
+                <span data-lang="es">Hago producción musical y shows en vivo. Para contrataciones, colaboraciones u otras consultas, por favor usa el formulario a continuación o llama al +1 604-725-1561.</span>
+            </p>
+            <form id="contact-form" action="https://formspree.io/f/xrblbppa" method="POST" class="max-w-xl mx-auto space-y-4">
+                <input type="text" name="name" required placeholder="Name / Nombre" class="w-full p-3 rounded-md border border-[var(--border-color)] bg-transparent focus:ring-2 focus:ring-[var(--accent-gold)] focus:outline-none transition-shadow">
+                <input type="email" name="email" required placeholder="Email / Correo Electrónico" class="w-full p-3 rounded-md border border-[var(--border-color)] bg-transparent focus:ring-2 focus:ring-[var(--accent-gold)] focus:outline-none transition-shadow">
+                <textarea name="message" rows="5" required placeholder="Message / Mensaje" class="w-full p-3 rounded-md border border-[var(--border-color)] bg-transparent focus:ring-2 focus:ring-[var(--accent-gold)] focus:outline-none transition-shadow"></textarea>
+                <button type="submit" class="font-sans-bold uppercase text-base bg-[var(--accent-gold)] text-[var(--bg-dark)] py-3 px-10 rounded-full hover:opacity-90 transition-opacity">
+                    <span data-lang="en">Send Message</span><span data-lang="es">Enviar Mensaje</span>
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-[var(--border-color)] py-8">
+        <div class="container mx-auto text-center text-gray-400">
+            <a href="#" class="block w-16 h-auto mx-auto mb-4 text-gray-400 hover:text-[var(--accent-gold)] transition-colors">
+                <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 481.13 432.43">
+                    <path fill="currentColor" d="M428.07,216.8c-33.86,26.72-80.04,27.63-121.3,24.56,11.66,31.96,21.83,64.63,33.94,96.42,8.23,21.58,16.95,41.41,41.18,48.73,3.47,1.05,15.14,1.67,15.83,2.15,1.44.99,1.44,4.11,0,5.1l-127.92,1.01c-1.32-1.33-3.1-4.78-1.05-6.1,1.03-.66,14.82-1.81,18.81-3.17,21.76-7.44,13.97-40.34,8.5-57.01-15.5-47.15-61.96-81.91-108.18-95.62-4.87-1.44-32.87-9.05-35.07-5.9-1.9,6.96-5.06,13.44-7.63,20.14-10.32,26.92-33.36,79.6-31.26,106.68,2.05,26.43,20.53,32.54,43.98,34.44v5.99s-120.88,0-120.88,0l.96-4.53c42.59-5.88,54.66-48.28,68.46-82.39,11.06-27.34,21.45-55.29,31.48-82.9-23.15.1-45.06,4.25-64.84,16.57-22.49,14-49.86,47.75-36.8,75.58,2.89,6.16,10.42,7.89,12.26,10.72,3.91,5.99-12.26,1.21-14.83-.15-31.55-16.66-13.02-61.12,5.8-80.76,25.91-27.03,66.25-35.56,102.4-30.95,13.06-35.72,27.55-70.97,40.75-106.63,3.91-10.58,14.88-35.37,16.13-44.81,2.68-20.27-16.89-18.96-31.3-22.29l-.59-4.09h195.3c90.65.92,138.01,122.3,65.87,179.24ZM280.34,46.18c-14.81.92-27.4-.45-29.4,17.98-2.62,24.16,18.49,74.64,27.37,99.26,7.9,21.89,16.6,43.57,24.39,65.52.87,1.3,2.14,1.3,3.51,1.48,11.78,1.59,37.91.07,49.88-2.16,45.9-8.57,63.35-46.73,62.62-90.33-1.38-82.93-69.48-96.01-138.38-91.74ZM209.85,78.52l-51.94,137.86c31.62,3.28,62.3,14.39,89.05,31.34l29.84,22.6-66.94-191.8Z"/>
+                </svg>
+            </a>
+            <div class="flex justify-center space-x-6 mb-4 text-2xl">
+                <a href="https://www.instagram.com/aniposada/" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--accent-gold)] transition-colors"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@aniposada" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--accent-gold)] transition-colors"><i class="fab fa-youtube"></i></a>
+                <a href="https://open.spotify.com/artist/3y07edW00OFsOMDrDvL5Xk" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--accent-gold)] transition-colors"><i class="fab fa-spotify"></i></a>
+            </div>
+            <p class="text-sm">&copy; <span id="copyright-year"></span> AniPosada. <span data-lang="en">All Rights Reserved.</span><span data-lang="es">Todos los Derechos Reservados.</span></p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const html = document.documentElement;
+            const langToggle = document.getElementById('lang-toggle');
+            const header = document.getElementById('main-header');
+            const copyrightYear = document.getElementById('copyright-year');
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+            function applyLanguage(lang) {
+                html.setAttribute('lang', lang);
+            }
+
+            // --- LANGUAGE SWITCHER ---
+            const currentLang = localStorage.getItem('lang') || 'en';
+            applyLanguage(currentLang);
+
+            langToggle.addEventListener('click', () => {
+                const newLang = html.getAttribute('lang') === 'en' ? 'es' : 'en';
+                localStorage.setItem('lang', newLang);
+                applyLanguage(newLang);
+            });
+            
+            // --- HAMBURGER MENU ---
+            function toggleMenu() {
+                mobileMenu.classList.toggle('translate-x-full');
+            }
+            hamburgerBtn.addEventListener('click', toggleMenu);
+            mobileNavLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+
+            // --- HEADER SCROLL EFFECT ---
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('bg-[var(--bg-dark)]', 'shadow-2xl');
+                } else {
+                    header.classList.remove('bg-[var(--bg-dark)]', 'shadow-2xl');
+                }
+            });
+
+            // --- FADE-IN ON SCROLL ---
+            const sections = document.querySelectorAll('.fade-in-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // --- DYNAMIC VIDEOS ---
+            function displayLatestVideos() {
+                const videoGrid = document.getElementById('video-grid');
+                if (!videoGrid) return;
+
+                const latestVideoIds = ['EsezEDYw_lk']; // Only one video
+
+                videoGrid.parentElement.querySelector('.max-w-4xl')?.remove(); // Clean up old structure if present
+                videoGrid.className = 'max-w-4xl mx-auto'; // Center the container
+
+                latestVideoIds.forEach(videoId => {
+                    const videoContainer = document.createElement('div');
+                    videoContainer.className = 'relative overflow-hidden rounded-md border-2 border-[var(--border-color)] shadow-xl'
+                    videoContainer.style.paddingTop = '56.25%'; // 16:9 aspect ratio
+
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                    iframe.frameBorder = '0';
+                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                    iframe.allowFullscreen = true;
+                    iframe.className = 'absolute top-0 left-0 w-full h-full';
+                    iframe.loading = 'lazy';
+
+                    videoContainer.appendChild(iframe);
+                    videoGrid.appendChild(videoContainer);
+                });
+            }
+            displayLatestVideos();
+            
+            // --- COPYRIGHT YEAR ---
+            copyrightYear.textContent = new Date().getFullYear();
+        });
+    </script>
+
+</body>
+</html>
