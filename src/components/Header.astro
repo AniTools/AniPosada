@@ -2,6 +2,7 @@
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { useT, homePath, type Lang, type UIKey } from '../i18n/ui';
+import { site } from '../lib/content';
 
 interface Props {
   lang: Lang;
@@ -36,6 +37,21 @@ const links: [string, UIKey][] = [
         <span class:list={{ on: lang === 'en' }}>EN</span>
         <span class:list={{ on: lang === 'es' }}>ES</span>
       </a>
+      {
+        site.supportUrl && (
+          <a
+            class="btn header__support"
+            href={site.supportUrl}
+            target="_blank"
+            rel="noopener"
+            aria-label={t('support.button')}
+            title={t('support.button')}
+          >
+            <Icon name="coffee" size={17} />
+            <span class="header__support-label">{t('support.nav')}</span>
+          </a>
+        )
+      }
       <a class="btn btn--sun header__cta" href="#contact">{t('nav.contact')}</a>
       <button class="header__burger" type="button" aria-expanded="false" aria-controls="mobile-nav" data-burger>
         <Icon name="menu" size={22} />
@@ -58,6 +74,14 @@ const links: [string, UIKey][] = [
         ))
       }
     </nav>
+    {
+      site.supportUrl && (
+        <a class="btn btn--sun mobile-nav__support" href={site.supportUrl} target="_blank" rel="noopener">
+          <Icon name="coffee" size={18} />
+          {t('support.button')}
+        </a>
+      )
+    }
     <a class="mobile-nav__lang" href={homePath(other)} hreflang={other}>{t('lang.switch')}</a>
   </div>
 </header>
@@ -162,6 +186,40 @@ const links: [string, UIKey][] = [
     padding: 0.55rem 1.2rem;
     font-size: 0.875rem;
   }
+  /* Coffee button: icon-only circle on phones, labelled pill on desktop. */
+  .header__support {
+    min-height: 2.75rem;
+    width: 2.75rem;
+    padding: 0;
+    border-color: rgb(245 162 122 / 0.55);
+    color: var(--sun);
+  }
+  .header__support:hover {
+    border-color: var(--sun);
+    background: rgb(245 162 122 / 0.12);
+  }
+  .header__support-label {
+    display: none;
+  }
+  @media (min-width: 960px) {
+    .header__support {
+      width: auto;
+      min-height: 2.5rem;
+      padding: 0.55rem 1.1rem;
+      font-size: 0.875rem;
+    }
+    .header__support-label {
+      display: inline;
+    }
+  }
+  .mobile-nav__support {
+    align-self: flex-start;
+    margin-top: 2.5rem;
+  }
+  .mobile-nav__support + .mobile-nav__lang {
+    margin-top: 1.25rem;
+  }
+
   .header__burger {
     display: grid;
     place-items: center;
