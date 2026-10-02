@@ -1,0 +1,7 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "aniposada", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 4321, "autoPort": true },
+    { "name": "aniposada-prod", "runtimeExecutable": "npm", "runtimeArgs": ["run", "preview"], "port": 4321, "autoPort": true }
+  ]
+}

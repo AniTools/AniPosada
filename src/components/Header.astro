@@ -1,0 +1,265 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { useT, homePath, type Lang, type UIKey } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  hasShows: boolean;
+}
+const { lang, hasShows } = Astro.props;
+const t = useT(lang);
+const other: Lang = lang === 'en' ? 'es' : 'en';
+
+const links: [string, UIKey][] = [
+  ['music', 'nav.music'],
+  ['videos', 'nav.videos'],
+  ['about', 'nav.about'],
+  ['gallery', 'nav.gallery'],
+  ...(hasShows ? ([['shows', 'nav.shows']] as [string, UIKey][]) : []),
+  ['services', 'nav.services'],
+];
+---
+
+<header class="header" data-header>
+  <div class="header__inner wrap">
+    <a class="header__logo" href={homePath(lang)} aria-label="Aniposada — home">
+      <Logo class="header__mark" />
+    </a>
+
+    <nav class="header__nav" aria-label="Main">
+      {links.map(([id, key]) => <a href={`#${id}`}>{t(key)}</a>)}
+    </nav>
+
+    <div class="header__actions">
+      <a class="header__lang" href={homePath(other)} hreflang={other} lang={other} title={t('lang.switch')}>
+        <span class:list={{ on: lang === 'en' }}>EN</span>
+        <span class:list={{ on: lang === 'es' }}>ES</span>
+      </a>
+      <a class="btn btn--sun header__cta" href="#contact">{t('nav.contact')}</a>
+      <button class="header__burger" type="button" aria-expanded="false" aria-controls="mobile-nav" data-burger>
+        <Icon name="menu" size={22} />
+        <span class="sr-only">{t('nav.menu')}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav" data-mobile-nav hidden>
+    <button class="mobile-nav__close" type="button" data-burger-close>
+      <Icon name="x" size={26} />
+      <span class="sr-only">{t('nav.close')}</span>
+    </button>
+    <nav aria-label="Mobile">
+      {
+        [...links, ['contact', 'nav.contact'] as [string, UIKey]].map(([id, key], i) => (
+          <a href={`#${id}`} style={`--i:${i}`}>
+            {t(key)}
+          </a>
+        ))
+      }
+    </nav>
+    <a class="mobile-nav__lang" href={homePath(other)} hreflang={other}>{t('lang.switch')}</a>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    transition:
+      background 0.4s var(--ease),
+      border-color 0.4s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  .header.is-scrolled {
+    background: rgb(17 13 11 / 0.78);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    border-color: var(--line);
+  }
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    height: 4.75rem;
+  }
+  .header__logo {
+    color: var(--cream);
+    transition: color 0.3s;
+  }
+  .header__logo:hover {
+    color: var(--sun);
+  }
+  .header__logo :global(.header__mark) {
+    width: 2.6rem;
+    height: auto;
+  }
+  .header__nav {
+    display: none;
+    gap: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .header__nav a {
+    position: relative;
+    text-decoration: none;
+    color: rgb(243 233 220 / 0.8);
+    transition: color 0.3s;
+  }
+  .header__nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.35rem;
+    height: 1px;
+    background: var(--sun);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease);
+  }
+  .header__nav a:hover {
+    color: var(--cream);
+  }
+  .header__nav a:hover::after {
+    transform: scaleX(1);
+  }
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .header__lang {
+    display: inline-flex;
+    padding: 0.25rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+  .header__lang span {
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    color: var(--muted);
+    transition:
+      background 0.3s,
+      color 0.3s;
+  }
+  .header__lang span.on {
+    background: var(--cream);
+    color: var(--ink);
+  }
+  .header__lang:hover span:not(.on) {
+    color: var(--cream);
+  }
+  .header__cta {
+    display: none;
+    min-height: 2.5rem;
+    padding: 0.55rem 1.2rem;
+    font-size: 0.875rem;
+  }
+  .header__burger {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: none;
+    color: var(--cream);
+    cursor: pointer;
+  }
+  @media (min-width: 960px) {
+    .header__nav,
+    .header__cta {
+      display: flex;
+    }
+    .header__burger {
+      display: none;
+    }
+  }
+
+  .mobile-nav {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem var(--gutter) 3rem;
+    background:
+      radial-gradient(circle at 85% 10%, rgb(245 162 122 / 0.28), transparent 45%),
+      var(--ink);
+  }
+  .mobile-nav[hidden] {
+    display: none;
+  }
+  .mobile-nav nav {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .mobile-nav nav a {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 11vw, 3.5rem);
+    line-height: 1.15;
+    text-decoration: none;
+    animation: slide-in 0.6s var(--ease) both;
+    animation-delay: calc(var(--i) * 0.05s);
+  }
+  .mobile-nav nav a:hover {
+    color: var(--sun);
+  }
+  .mobile-nav__close {
+    position: absolute;
+    top: 1rem;
+    right: var(--gutter);
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: none;
+    color: var(--cream);
+    cursor: pointer;
+  }
+  .mobile-nav__lang {
+    margin-top: 2.5rem;
+    color: var(--sun);
+    font-weight: 600;
+  }
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 40);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const nav = document.querySelector<HTMLElement>('[data-mobile-nav]')!;
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]')!;
+  const close = document.querySelector<HTMLButtonElement>('[data-burger-close]')!;
+
+  const setOpen = (open: boolean) => {
+    nav.hidden = !open;
+    burger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+    (open ? close : burger).focus();
+  };
+  burger.addEventListener('click', () => setOpen(true));
+  close.addEventListener('click', () => setOpen(false));
+  nav.querySelectorAll('nav a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !nav.hidden) setOpen(false);
+  });
+</script>

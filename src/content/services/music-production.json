@@ -1,0 +1,13 @@
+{
+  "name": "Music production",
+  "title": {
+    "en": "Music Production",
+    "es": "Producción Musical"
+  },
+  "description": {
+    "en": "I help you record and produce your songs with care, from your first idea to the finished track.",
+    "es": "Te ayudo a grabar y producir tus canciones con esmero, desde la idea inicial hasta la pista final."
+  },
+  "icon": "sliders",
+  "order": 20
+}

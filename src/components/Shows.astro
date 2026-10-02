@@ -1,0 +1,131 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import { useT, type Lang } from '../i18n/ui';
+import { pick } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+  shows: CollectionEntry<'shows'>[];
+}
+const { lang, shows } = Astro.props;
+const t = useT(lang);
+const locale = lang === 'en' ? 'en-CA' : 'es-CO';
+const part = (date: string, opts: Intl.DateTimeFormatOptions) =>
+  new Intl.DateTimeFormat(locale, { ...opts, timeZone: 'UTC' }).format(new Date(`${date}T00:00:00Z`));
+---
+
+{
+  shows.length > 0 && (
+    <section id="shows" class="section shows" data-shows>
+      <div class="wrap">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">{t('shows.eyebrow')}</p>
+          <h2 class="title">{t('shows.title')}</h2>
+        </header>
+
+        <ul class="shows__list" role="list">
+          {shows.map((s) => (
+            <li class="show" data-date={s.data.date} data-reveal>
+              <p class="show__date">
+                <span class="show__day">{part(s.data.date, { day: '2-digit' })}</span>
+                <span class="show__month">{part(s.data.date, { month: 'short', year: 'numeric' })}</span>
+              </p>
+              <div class="show__info">
+                <h3 class="show__venue">{s.data.venue}</h3>
+                <p class="show__meta">
+                  <Icon name="map-pin" size={14} />
+                  {s.data.city}
+                  {s.data.time && <span>· {s.data.time}</span>}
+                  {pick(s.data.note, lang) && <span>· {pick(s.data.note, lang)}</span>}
+                </p>
+              </div>
+              {s.data.link && (
+                <a class="btn" href={s.data.link} target="_blank" rel="noopener">
+                  {t('shows.tickets')}
+                  <Icon name="arrow-up-right" size={16} />
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .shows__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .show {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem 2rem;
+    align-items: center;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.4s var(--ease);
+  }
+  .show:hover {
+    background: linear-gradient(90deg, rgb(245 162 122 / 0.06), transparent);
+  }
+  .show .btn {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+  @media (min-width: 720px) {
+    .show {
+      grid-template-columns: 9rem 1fr auto;
+    }
+    .show .btn {
+      grid-column: auto;
+    }
+  }
+  .show__date {
+    display: grid;
+    line-height: 1;
+  }
+  .show__day {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    color: var(--sun);
+  }
+  .show__month {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .show__venue {
+    font-size: clamp(1.6rem, 3vw, 2.25rem);
+    margin-bottom: 0.4rem;
+  }
+  .show__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+</style>
+
+<script>
+  // Hide shows that have passed since the last deploy.
+  const today = new Date().toISOString().slice(0, 10);
+  const section = document.querySelector<HTMLElement>('[data-shows]');
+  if (section) {
+    section.querySelectorAll<HTMLElement>('[data-date]').forEach((li) => {
+      if ((li.dataset.date ?? '') < today) li.remove();
+    });
+    if (!section.querySelector('[data-date]')) {
+      section.remove();
+      document.querySelectorAll('a[href="#shows"]').forEach((a) => a.remove());
+    }
+  }
+</script>

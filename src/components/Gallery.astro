@@ -1,0 +1,210 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import { useT, type Lang } from '../i18n/ui';
+import { pick } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+  photos: CollectionEntry<'photos'>[];
+}
+const { lang, photos } = Astro.props;
+const t = useT(lang);
+---
+
+{
+  photos.length > 0 && (
+    <section id="gallery" class="section gallery">
+      <div class="wrap">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">{t('gallery.eyebrow')}</p>
+          <h2 class="title">{t('gallery.title')}</h2>
+        </header>
+
+        <ul class="masonry" role="list" data-gallery>
+          {photos.map((p, i) => (
+            <li data-reveal style={`--delay:${(i % 3) * 0.08}s`}>
+              <button type="button" data-index={i} aria-label={`${t('gallery.open')}: ${pick(p.data.alt, lang)}`}>
+                <img src={p.data.image} alt={pick(p.data.alt, lang)} loading="lazy" decoding="async" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <dialog class="lightbox" data-lightbox aria-label={t('gallery.title')}>
+        <img class="lightbox__img" alt="" data-lightbox-img />
+        <p class="lightbox__caption" data-lightbox-caption />
+        <button class="lightbox__btn lightbox__close" type="button" data-close aria-label={t('gallery.close')}>
+          <Icon name="x" size={22} />
+        </button>
+        {photos.length > 1 && (
+          <>
+            <button class="lightbox__btn lightbox__prev" type="button" data-prev aria-label={t('gallery.prev')}>
+              <Icon name="chevron-left" size={24} />
+            </button>
+            <button class="lightbox__btn lightbox__next" type="button" data-next aria-label={t('gallery.next')}>
+              <Icon name="chevron-right" size={24} />
+            </button>
+          </>
+        )}
+      </dialog>
+    </section>
+  )
+}
+
+<style>
+  .masonry {
+    columns: 3 280px;
+    column-gap: clamp(0.75rem, 2vw, 1.25rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .masonry li {
+    break-inside: avoid;
+    margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
+  }
+  .masonry button {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--ink-3);
+    cursor: zoom-in;
+  }
+  .masonry img {
+    width: 100%;
+    height: auto;
+    transition:
+      transform 1s var(--ease),
+      filter 0.6s;
+    filter: saturate(0.92);
+  }
+  .masonry button:hover img {
+    transform: scale(1.04);
+    filter: saturate(1.05);
+  }
+
+  .lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: clamp(3.5rem, 6vw, 5rem) clamp(0.75rem, 6vw, 6rem);
+    border: 0;
+    background: rgb(10 8 7 / 0.94);
+    color: var(--cream);
+  }
+  .lightbox[open] {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    place-items: center;
+    gap: 1rem;
+  }
+  .lightbox::backdrop {
+    background: transparent;
+  }
+  .lightbox__img {
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 0;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+  }
+  .lightbox__caption {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    text-align: center;
+  }
+  .lightbox__btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: rgb(17 13 11 / 0.6);
+    color: var(--cream);
+    cursor: pointer;
+    transition:
+      background 0.3s,
+      color 0.3s;
+  }
+  .lightbox__btn:hover {
+    background: var(--sun);
+    color: var(--ink);
+  }
+  .lightbox__close {
+    top: 1rem;
+    right: 1rem;
+  }
+  .lightbox__prev,
+  .lightbox__next {
+    top: 50%;
+    translate: 0 -50%;
+  }
+  .lightbox__prev {
+    left: 1rem;
+  }
+  .lightbox__next {
+    right: 1rem;
+  }
+  @media (max-width: 640px) {
+    .lightbox__prev,
+    .lightbox__next {
+      top: auto;
+      bottom: 1rem;
+      translate: none;
+    }
+  }
+</style>
+
+<script>
+  const list = document.querySelector<HTMLElement>('[data-gallery]');
+  const box = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+  if (list && box) {
+    const items = [...list.querySelectorAll<HTMLImageElement>('img')];
+    const img = box.querySelector<HTMLImageElement>('[data-lightbox-img]')!;
+    const caption = box.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+    let index = 0;
+
+    const show = (i: number) => {
+      index = (i + items.length) % items.length;
+      img.src = items[index].currentSrc || items[index].src;
+      img.alt = items[index].alt;
+      caption.textContent = items[index].alt;
+    };
+
+    list.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-index]');
+      if (!btn) return;
+      show(Number(btn.dataset.index));
+      box.showModal();
+      document.body.style.overflow = 'hidden';
+    });
+    box.addEventListener('close', () => (document.body.style.overflow = ''));
+    box.querySelector('[data-close]')?.addEventListener('click', () => box.close());
+    box.querySelector('[data-prev]')?.addEventListener('click', () => show(index - 1));
+    box.querySelector('[data-next]')?.addEventListener('click', () => show(index + 1));
+    box.addEventListener('click', (e) => {
+      if (e.target === box) box.close();
+    });
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+    });
+
+    // Swipe on phones.
+    let startX = 0;
+    box.addEventListener('touchstart', (e) => (startX = e.touches[0].clientX), { passive: true });
+    box.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+    });
+  }
+</script>

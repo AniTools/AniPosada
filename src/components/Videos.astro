@@ -1,0 +1,258 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import { useT, type Lang } from '../i18n/ui';
+import { site, youtubeId } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+  featured?: CollectionEntry<'videos'>;
+  others: CollectionEntry<'videos'>[];
+}
+const { lang, featured, others } = Astro.props;
+const t = useT(lang);
+const channel = site.socials.find((s) => s.platform === 'youtube')?.url;
+const fmt = new Intl.DateTimeFormat(lang === 'en' ? 'en-CA' : 'es-CO', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+
+{
+  featured && (
+    <section id="videos" class="section videos">
+      <div class="wrap">
+        <header class="section-head section-head--split" data-reveal>
+          <div>
+            <p class="eyebrow">{t('videos.eyebrow')}</p>
+            <h2 class="title">{t('videos.title')}</h2>
+          </div>
+          {channel && (
+            <a class="btn" href={channel} target="_blank" rel="noopener">
+              <Icon name="youtube" size={18} />
+              {t('videos.more')}
+              <Icon name="arrow-up-right" size={16} />
+            </a>
+          )}
+        </header>
+
+        <article class="feature" data-reveal>
+          <div class="yt yt--big">
+          <button
+            class="yt__btn"
+            type="button"
+            data-yt={youtubeId(featured.data.youtube)}
+            data-title={featured.data.title}
+            aria-label={`${t('videos.play')}: ${featured.data.title}`}
+          >
+            <img
+              src={`https://i.ytimg.com/vi/${youtubeId(featured.data.youtube)}/maxresdefault.jpg`}
+              alt=""
+              loading="lazy"
+              width="1280"
+              height="720"
+            />
+            <span class="yt__play" aria-hidden="true">
+              <Icon name="play" size={30} />
+            </span>
+          </button>
+          </div>
+          <div class="feature__caption">
+            <p class="feature__label">{t('videos.latest')}</p>
+            <h3 class="feature__title">{featured.data.title}</h3>
+            <p class="feature__date">{fmt.format(featured.data.date)}</p>
+          </div>
+        </article>
+
+        {others.length > 0 && (
+          <ul class="video-grid" role="list">
+            {others.map((v, i) => (
+              <li data-reveal style={`--delay:${(i % 3) * 0.08}s`}>
+                <div class="yt">
+                <button
+                  class="yt__btn"
+                  type="button"
+                  data-yt={youtubeId(v.data.youtube)}
+                  data-title={v.data.title}
+                  aria-label={`${t('videos.play')}: ${v.data.title}`}
+                >
+                  <img
+                    src={`https://i.ytimg.com/vi/${youtubeId(v.data.youtube)}/hqdefault.jpg`}
+                    alt=""
+                    loading="lazy"
+                    width="480"
+                    height="360"
+                  />
+                  <span class="yt__play" aria-hidden="true">
+                    <Icon name="play" size={20} />
+                  </span>
+                </button>
+                </div>
+                <p class="video-grid__title">{v.data.title}</p>
+                <p class="video-grid__date">{fmt.format(v.data.date)}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .videos {
+    background:
+      radial-gradient(ellipse 60% 50% at 15% 0%, rgb(224 120 106 / 0.12), transparent 70%),
+      var(--ink-2);
+    border-block: 1px solid var(--line);
+  }
+
+  .yt {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #000;
+  }
+  .yt__btn {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .yt img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    transition:
+      transform 1s var(--ease),
+      opacity 0.5s;
+  }
+  .yt:hover img {
+    transform: scale(1.03);
+    opacity: 1;
+  }
+  .yt__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: rgb(17 13 11 / 0.55);
+    border: 1px solid rgb(243 233 220 / 0.4);
+    backdrop-filter: blur(8px);
+    color: var(--cream);
+    transition:
+      background 0.4s var(--ease),
+      color 0.4s var(--ease),
+      transform 0.4s var(--ease);
+  }
+  .yt__play :global(svg) {
+    margin-left: 3px;
+    fill: currentColor;
+  }
+  .yt--big .yt__play {
+    width: clamp(4.5rem, 9vw, 6.5rem);
+    height: clamp(4.5rem, 9vw, 6.5rem);
+  }
+  .yt:hover .yt__play {
+    background: var(--sun);
+    color: var(--ink);
+    border-color: transparent;
+    transform: scale(1.06);
+  }
+  .yt :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .feature {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .feature .yt {
+    box-shadow: 0 50px 100px -50px rgb(0 0 0 / 0.9);
+  }
+  .feature__caption {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .feature__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sun);
+  }
+  .feature__title {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+  .feature__date {
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+  @media (min-width: 900px) {
+    .feature__caption {
+      grid-template-columns: auto 1fr auto;
+      align-items: baseline;
+      gap: 1.5rem;
+    }
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 2rem 1.5rem;
+    margin: clamp(3rem, 6vw, 4.5rem) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .video-grid .yt {
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.9rem;
+  }
+  .video-grid__title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    line-height: 1.15;
+  }
+  .video-grid__date {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  // Lightweight YouTube: show the thumbnail, only load the real player on click.
+  document.querySelectorAll<HTMLButtonElement>('[data-yt]').forEach((btn) => {
+    btn.addEventListener(
+      'click',
+      () => {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube-nocookie.com/embed/${btn.dataset.yt}?autoplay=1&rel=0`;
+        iframe.title = btn.dataset.title ?? 'YouTube video';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        btn.replaceWith(iframe);
+        iframe.focus();
+      },
+      { once: true }
+    );
+  });
+
+  // maxresdefault doesn't exist for every upload; YouTube returns a 120px grey
+  // placeholder instead of a 404, so fall back when the image is that small.
+  document.querySelectorAll<HTMLImageElement>('.yt--big img').forEach((img) => {
+    const check = () => {
+      if (img.naturalWidth > 0 && img.naturalWidth < 200) img.src = img.src.replace('maxresdefault', 'hqdefault');
+    };
+    img.complete ? check() : img.addEventListener('load', check, { once: true });
+  });
+</script>

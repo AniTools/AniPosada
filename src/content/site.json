@@ -1,0 +1,84 @@
+{
+  "tagline": {
+    "en": "Singer-Songwriter & Producer",
+    "es": "Cantautora y Productora"
+  },
+  "intro": {
+    "en": "Colombian roots, Canadian home. Heartfelt songs about love, spirituality and the causes that move us.",
+    "es": "Raíces colombianas, hogar en Canadá. Canciones sentidas sobre el amor, la espiritualidad y las causas que nos mueven."
+  },
+  "heroImage": "/images/site/hero.jpg",
+  "spotifyArtistId": "3y07edW00OFsOMDrDvL5Xk",
+  "aboutHeading": {
+    "en": "Who is Ani?",
+    "es": "¿Quién es Ani?"
+  },
+  "aboutQuote": {
+    "en": "Musical tales that weave my Colombian roots with my life in Canada.",
+    "es": "Historias musicales que tejen mis raíces colombianas con mi vida en Canadá."
+  },
+  "aboutBody": [
+    {
+      "en": "Ana María Posada, known as Aniposada, is a Colombian singer-songwriter who weaves musical tales that blend her Colombian roots with her experiences living in Canada. She has been composing heartfelt melodies since childhood, a journey that led to her debut album, “Madeja de Sentimiento” (Tangle of Feelings), recorded in her homeland.",
+      "es": "Ana María Posada, conocida como Aniposada, es una cantautora colombiana que teje historias musicales que fusionan sus raíces colombianas con sus experiencias viviendo en Canadá. Desde su infancia ha compuesto sentidas melodías, un viaje que culminó en su álbum debut, “Madeja de Sentimiento”, grabado en su tierra natal."
+    },
+    {
+      "en": "Her music is a fusion of her Latin heritage and her international experiences. Drawing inspiration from social causes, spirituality and love, her songs have the power to touch hearts and inspire change.",
+      "es": "Su música es una fusión de su herencia latina y sus experiencias internacionales. Inspirándose en causas sociales, la espiritualidad y el amor, sus canciones tienen el poder de tocar corazones e inspirar al cambio."
+    },
+    {
+      "en": "Skilled in piano, guitar and ukulele, she brings them together into sweet, emotive melodies that linger in the soul. She is currently working on new music — stay tuned.",
+      "es": "Habilidosa en el piano, la guitarra y el ukelele, los une en melodías dulces y emotivas que perduran en el alma. Actualmente trabaja en nueva música — mantente atento."
+    }
+  ],
+  "aboutImage": "/images/site/about.jpg",
+  "facts": [
+    {
+      "label": {
+        "en": "From",
+        "es": "De"
+      },
+      "value": {
+        "en": "Colombia → Canada",
+        "es": "Colombia → Canadá"
+      }
+    },
+    {
+      "label": {
+        "en": "Plays",
+        "es": "Toca"
+      },
+      "value": {
+        "en": "Piano, guitar, ukulele",
+        "es": "Piano, guitarra, ukelele"
+      }
+    },
+    {
+      "label": {
+        "en": "Debut album",
+        "es": "Álbum debut"
+      },
+      "value": {
+        "en": "Madeja de Sentimiento",
+        "es": "Madeja de Sentimiento"
+      }
+    }
+  ],
+  "bookingUrl": "https://calendar.app.google/G54s9RJ32gTk1sKM9",
+  "phone": "+1 604-725-1561",
+  "email": "hello@aniposada.com",
+  "socials": [
+    {
+      "platform": "instagram",
+      "url": "https://www.instagram.com/aniposada/"
+    },
+    {
+      "platform": "youtube",
+      "url": "https://www.youtube.com/@aniposada"
+    },
+    {
+      "platform": "spotify",
+      "url": "https://open.spotify.com/artist/3y07edW00OFsOMDrDvL5Xk"
+    }
+  ]
+}

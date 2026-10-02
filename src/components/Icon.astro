@@ -1,0 +1,47 @@
+---
+/* Interface icons come from Lucide, platform logos from Simple Icons. Both are
+   inlined at build time, so there is no icon font or CDN request. */
+import { siInstagram, siYoutube, siSpotify, siTiktok, siApplemusic, siFacebook } from 'simple-icons';
+
+const lucide = import.meta.glob('/node_modules/lucide-static/icons/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
+const brands: Record<string, { path: string }> = {
+  instagram: siInstagram,
+  youtube: siYoutube,
+  spotify: siSpotify,
+  tiktok: siTiktok,
+  apple: siApplemusic,
+  facebook: siFacebook,
+};
+
+/* CMS-friendly names → Lucide file names */
+const aliases: Record<string, string> = { sliders: 'sliders-horizontal', pen: 'pen-line' };
+
+interface Props {
+  name: string;
+  size?: number | string;
+  class?: string;
+}
+const { name, size = 20, class: className } = Astro.props;
+
+let svg = '';
+if (brands[name]) {
+  svg = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="${brands[name].path}"/></svg>`;
+} else {
+  svg = lucide[`/node_modules/lucide-static/icons/${aliases[name] ?? name}.svg`] ?? '';
+}
+// Only rewrite the outer <svg> tag: inner shapes (rect, circle) also use width/height.
+svg = svg
+  .replace(/<!--[\s\S]*?-->/g, '')
+  .replace(/<svg[^>]*>/, (tag) =>
+    tag
+      .replace(/\s(width|height|class)="[^"]*"/g, '')
+      .replace('<svg', `<svg width="${size}" height="${size}" aria-hidden="true" focusable="false"${className ? ` class="${className}"` : ''}`)
+  );
+---
+
+<Fragment set:html={svg} />

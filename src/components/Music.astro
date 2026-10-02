@@ -1,0 +1,181 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import { useT, type Lang, type UIKey } from '../i18n/ui';
+import { site } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+  releases: CollectionEntry<'releases'>[];
+}
+const { lang, releases } = Astro.props;
+const t = useT(lang);
+const spotifyUrl = `https://open.spotify.com/artist/${site.spotifyArtistId}`;
+const year = (d: Date) => d.getUTCFullYear();
+---
+
+<section id="music" class="section music">
+  <div class="wrap">
+    <header class="section-head section-head--split" data-reveal>
+      <div>
+        <p class="eyebrow">{t('music.eyebrow')}</p>
+        <h2 class="title">{t('music.title')}</h2>
+      </div>
+      <a class="btn" href={spotifyUrl} target="_blank" rel="noopener">
+        <Icon name="spotify" size={18} />
+        Spotify
+        <Icon name="arrow-up-right" size={16} />
+      </a>
+    </header>
+
+    <div class="player" data-reveal>
+      <iframe
+        title="Aniposada on Spotify"
+        src={`https://open.spotify.com/embed/artist/${site.spotifyArtistId}?utm_source=generator&theme=0`}
+        width="100%"
+        height="452"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+    </div>
+
+    {
+      releases.length > 0 && (
+        <div class="releases">
+          <h3 class="releases__title" data-reveal>
+            {t('music.releases')}
+          </h3>
+          <ul class="releases__grid" role="list">
+            {releases.map((r, i) => {
+              const href = r.data.spotify || r.data.appleMusic || r.data.youtube;
+              return (
+                <li class="release" data-reveal style={`--delay:${(i % 4) * 0.08}s`}>
+                  <a href={href ?? undefined} target="_blank" rel="noopener" class="release__cover">
+                    <img src={r.data.cover} alt="" loading="lazy" width="600" height="600" />
+                    <span class="release__play" aria-hidden="true">
+                      <Icon name="play" size={20} />
+                    </span>
+                  </a>
+                  <div class="release__meta">
+                    <p class="release__name">{r.data.title}</p>
+                    <p class="release__kind">
+                      {t(`music.${r.data.kind}` as UIKey)} · {year(r.data.date)}
+                    </p>
+                  </div>
+                  <div class="release__links">
+                    {r.data.spotify && (
+                      <a href={r.data.spotify} target="_blank" rel="noopener" aria-label={`${r.data.title} — Spotify`}>
+                        <Icon name="spotify" size={16} />
+                      </a>
+                    )}
+                    {r.data.appleMusic && (
+                      <a href={r.data.appleMusic} target="_blank" rel="noopener" aria-label={`${r.data.title} — Apple Music`}>
+                        <Icon name="apple" size={16} />
+                      </a>
+                    )}
+                    {r.data.youtube && (
+                      <a href={r.data.youtube} target="_blank" rel="noopener" aria-label={`${r.data.title} — YouTube`}>
+                        <Icon name="youtube" size={16} />
+                      </a>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .player {
+    padding: clamp(0.5rem, 1.2vw, 0.9rem);
+    border-radius: calc(var(--radius) + 6px);
+    background:
+      linear-gradient(var(--ink-2), var(--ink-2)) padding-box,
+      linear-gradient(140deg, rgb(245 162 122 / 0.6), var(--line) 40%, var(--line) 70%, rgb(224 120 106 / 0.4)) border-box;
+    border: 1px solid transparent;
+    box-shadow: 0 30px 80px -40px rgb(245 162 122 / 0.35);
+  }
+  .player iframe {
+    border: 0;
+    border-radius: var(--radius-sm);
+  }
+
+  .releases {
+    margin-top: clamp(3.5rem, 7vw, 5rem);
+  }
+  .releases__title {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    margin-bottom: 1.75rem;
+  }
+  .releases__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr));
+    gap: clamp(1.25rem, 3vw, 2rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .release {
+    display: grid;
+    gap: 0.9rem;
+  }
+  .release__cover {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--ink-3);
+  }
+  .release__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s var(--ease);
+  }
+  .release__play {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--sun);
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.4s var(--ease),
+      transform 0.4s var(--ease);
+  }
+  .release__cover:hover img {
+    transform: scale(1.05);
+  }
+  .release__cover:hover .release__play,
+  .release__cover:focus-visible .release__play {
+    opacity: 1;
+    transform: none;
+  }
+  .release__name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1.1;
+  }
+  .release__kind {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .release__links {
+    display: flex;
+    gap: 0.75rem;
+    color: var(--muted);
+  }
+  .release__links a:hover {
+    color: var(--sun);
+  }
+</style>

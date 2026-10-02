@@ -1,0 +1,13 @@
+{
+  "name": "Live music",
+  "title": {
+    "en": "Live Music for Magical Moments",
+    "es": "Música en Vivo para Momentos Mágicos"
+  },
+  "description": {
+    "en": "From cozy restaurants to intimate weddings and private gatherings, I bring heartfelt acoustic performances with just my voice and guitar.",
+    "es": "Desde restaurantes acogedores hasta bodas íntimas y reuniones privadas, ofrezco presentaciones acústicas y sentidas, solo con mi voz y mi guitarra."
+  },
+  "icon": "mic",
+  "order": 10
+}

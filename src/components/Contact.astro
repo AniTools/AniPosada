@@ -1,0 +1,279 @@
+---
+import Icon from './Icon.astro';
+import { useT, type Lang } from '../i18n/ui';
+import { site } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const tel = site.phone.replace(/[^\d+]/g, '');
+---
+
+<section id="contact" class="section contact">
+  <div class="contact__grid wrap">
+    <div class="contact__intro" data-reveal>
+      <p class="eyebrow">{t('contact.eyebrow')}</p>
+      <h2 class="title">{t('contact.title')}</h2>
+      <p class="lede">{t('contact.body')}</p>
+
+      <dl class="contact__list">
+        {
+          site.phone && (
+            <div>
+              <dt>{t('contact.call')}</dt>
+              <dd>
+                <a class="contact__link" href={`tel:${tel}`}>
+                  <Icon name="phone" size={18} />
+                  {site.phone}
+                </a>
+              </dd>
+            </div>
+          )
+        }
+        {
+          site.email && (
+            <div>
+              <dt>{t('contact.write')}</dt>
+              <dd>
+                <a class="contact__link" href={`mailto:${site.email}`}>
+                  <Icon name="mail" size={18} />
+                  {site.email}
+                </a>
+              </dd>
+            </div>
+          )
+        }
+        <div>
+          <dt>{t('contact.follow')}</dt>
+          <dd class="contact__socials">
+            {
+              site.socials.map((s) => (
+                <a href={s.url} target="_blank" rel="noopener" aria-label={s.platform}>
+                  <Icon name={s.platform} size={18} />
+                </a>
+              ))
+            }
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <form
+      class="form"
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      data-contact-form
+      data-reveal
+      style="--delay:0.1s"
+    >
+      <label class="field">
+        <span>{t('contact.name')}</span>
+        <input type="text" name="name" required autocomplete="name" />
+      </label>
+      <label class="field">
+        <span>{t('contact.email')}</span>
+        <input type="email" name="email" required autocomplete="email" />
+      </label>
+      <label class="field">
+        <span>{t('contact.message')}</span>
+        <textarea name="message" rows="5" required></textarea>
+      </label>
+      <input type="hidden" name="form-name" value="contact" />
+      <input type="hidden" name="subject" value={lang === 'en' ? 'New message from aniposada.com' : 'Nuevo mensaje desde aniposada.com (ES)'} />
+      <p class="sr-only" aria-hidden="true">
+        <label>Don’t fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+      </p>
+      <button
+        class="btn btn--sun form__submit"
+        type="submit"
+        data-label={t('contact.send')}
+        data-sending={t('contact.sending')}
+      >
+        {t('contact.send')}
+        <Icon name="arrow-right" size={18} />
+      </button>
+      <p
+        class="form__status"
+        role="status"
+        aria-live="polite"
+        data-status
+        data-success={t('contact.success')}
+        data-error={t('contact.error')}
+      >
+      </p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact {
+    background:
+      radial-gradient(ellipse 70% 60% at 100% 100%, rgb(245 162 122 / 0.16), transparent 70%),
+      var(--ink);
+  }
+  .contact__grid {
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+  }
+  @media (min-width: 900px) {
+    .contact__grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+  .contact__intro {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+  }
+  .contact__list {
+    display: grid;
+    gap: 1.5rem;
+    margin: 1.5rem 0 0;
+  }
+  .contact__list dt {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .contact__list dd {
+    margin: 0;
+  }
+  .contact__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .contact__link:hover {
+    color: var(--sun);
+  }
+  .contact__link :global(svg) {
+    color: var(--sun);
+  }
+  .contact__socials {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .contact__socials a {
+    display: grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    transition:
+      background 0.3s,
+      color 0.3s,
+      border-color 0.3s;
+  }
+  .contact__socials a:hover {
+    background: var(--sun);
+    border-color: var(--sun);
+    color: var(--ink);
+  }
+
+  .form {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) + 4px);
+    background: rgb(26 20 17 / 0.7);
+    backdrop-filter: blur(10px);
+  }
+  .field {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .field span {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 0.95rem 1.1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: rgb(17 13 11 / 0.6);
+    color: var(--cream);
+    font: inherit;
+    resize: vertical;
+    transition:
+      border-color 0.3s,
+      box-shadow 0.3s;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--sun);
+    box-shadow: 0 0 0 4px rgb(245 162 122 / 0.18);
+  }
+  .form__submit {
+    justify-self: start;
+    margin-top: 0.25rem;
+  }
+  .form__submit[disabled] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .form__status {
+    min-height: 1.5em;
+    font-size: 0.9375rem;
+  }
+  .form__status.is-success {
+    color: var(--sun-light);
+  }
+  .form__status.is-error {
+    color: var(--rose);
+  }
+</style>
+
+<script>
+  // Netlify Forms picks this form up at deploy time and emails each message
+  // (set the address in Netlify → Forms → Notifications). Submitting over fetch
+  // keeps visitors on the page; without JavaScript it still posts normally.
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const label = btn.firstChild!;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      label.textContent = btn.dataset.sending!;
+      status.className = 'form__status';
+      status.textContent = '';
+      try {
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString(),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        status.classList.add('is-success');
+        status.textContent = status.dataset.success!;
+      } catch {
+        status.classList.add('is-error');
+        status.textContent = status.dataset.error!;
+      } finally {
+        btn.disabled = false;
+        label.textContent = btn.dataset.label!;
+      }
+    });
+  }
+</script>

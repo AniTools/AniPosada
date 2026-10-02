@@ -1,0 +1,13 @@
+{
+  "name": "Songwriting",
+  "title": {
+    "en": "Songwriting & Composition",
+    "es": "Composición de Canciones"
+  },
+  "description": {
+    "en": "Whether it’s a melody for your next single or a custom piece for film or media, I’ll help you write music that feels honest, moving, and made just for you.",
+    "es": "Ya sea una melodía para tu próximo sencillo o una pieza personalizada para cine o medios, te ayudaré a escribir música que se sienta honesta, conmovedora y hecha solo para ti."
+  },
+  "icon": "pen",
+  "order": 30
+}

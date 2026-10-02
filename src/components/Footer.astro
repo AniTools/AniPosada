@@ -1,0 +1,81 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { useT, homePath, type Lang } from '../i18n/ui';
+import { site } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const other: Lang = lang === 'en' ? 'es' : 'en';
+---
+
+<footer class="footer">
+  <div class="footer__sign wrap" aria-hidden="true">
+    <Logo variant="wordmark" class="footer__wordmark" />
+  </div>
+  <div class="footer__bar wrap">
+    <p>© {new Date().getFullYear()} Aniposada. {t('footer.rights')}</p>
+    <div class="footer__links">
+      {
+        site.socials.map((s) => (
+          <a href={s.url} target="_blank" rel="noopener" aria-label={s.platform}>
+            <Icon name={s.platform} size={16} />
+          </a>
+        ))
+      }
+      <a href={homePath(other)} hreflang={other}>{t('lang.switch')}</a>
+      <a href="#top" class="footer__top">
+        {t('footer.top')}
+        <Icon name="arrow-up" size={14} />
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-top: clamp(3rem, 7vw, 5rem);
+    overflow: hidden;
+  }
+  .footer__sign :global(.footer__wordmark) {
+    width: 100%;
+    height: auto;
+    color: transparent;
+    stroke: rgb(243 233 220 / 0.18);
+    stroke-width: 1.2;
+    transition: color 1.2s var(--ease);
+  }
+  .footer__sign:hover :global(.footer__wordmark) {
+    color: rgb(245 162 122 / 0.16);
+  }
+  .footer__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-block: 2rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .footer__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer__links a:hover {
+    color: var(--sun);
+  }
+</style>

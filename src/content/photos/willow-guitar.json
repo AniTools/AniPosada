@@ -1,0 +1,9 @@
+{
+  "title": "Willow guitar",
+  "image": "/images/gallery/willow-guitar.jpg",
+  "alt": {
+    "en": "Ani smiling against a willow tree with her guitar",
+    "es": "Ani sonriendo junto a un sauce con su guitarra"
+  },
+  "order": 20
+}

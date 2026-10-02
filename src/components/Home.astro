@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Music from './Music.astro';
+import Videos from './Videos.astro';
+import About from './About.astro';
+import Gallery from './Gallery.astro';
+import Shows from './Shows.astro';
+import Services from './Services.astro';
+import Contact from './Contact.astro';
+import Footer from './Footer.astro';
+import { loadContent } from '../lib/content';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const { photos, services, releases, shows, featured, otherVideos } = await loadContent();
+---
+
+<Base lang={lang}>
+  <span id="top"></span>
+  <Header lang={lang} hasShows={shows.length > 0} />
+  <main id="main">
+    <Hero lang={lang} />
+    <Music lang={lang} releases={releases} />
+    <Videos lang={lang} featured={featured} others={otherVideos} />
+    <About lang={lang} />
+    <Gallery lang={lang} photos={photos} />
+    <Shows lang={lang} shows={shows} />
+    <Services lang={lang} services={services} />
+    <Contact lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Base>
