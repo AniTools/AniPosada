@@ -18,7 +18,8 @@ With `npm run dev` running, open **http://localhost:4321/keystatic**:
 
 | Section          | What you can do                                                     |
 | ---------------- | ------------------------------------------------------------------- |
-| Gallery photos   | Upload a photo + a short description (EN/ES). `Order` sets position. |
+| Gallery albums   | One per photoshoot (e.g. Sunset Vibes). Tabs appear once there are 2+. |
+| Gallery photos   | Upload a photo, pick its album, add a short description (EN/ES).    |
 | Videos           | Paste a YouTube link. Tick "Feature" to show it big at the top.      |
 | Releases         | Cover art + Spotify / Apple Music / YouTube links.                   |
 | Shows            | Date, venue, city, ticket link. Past shows hide themselves.          |

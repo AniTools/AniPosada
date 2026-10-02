@@ -30,13 +30,32 @@ export default config({
   ui: {
     brand: { name: 'AniPosada' },
     navigation: {
-      Media: ['photos', 'videos', 'releases'],
+      Media: ['albums', 'photos', 'videos', 'releases'],
       Live: ['shows', 'services'],
       Settings: ['site'],
     },
   },
 
   collections: {
+    albums: collection({
+      label: 'Gallery albums',
+      slugField: 'title',
+      path: 'src/content/albums/*',
+      format: { data: 'json' },
+      columns: ['title', 'order'],
+      schema: {
+        title: fields.slug({
+          name: { label: 'Album name (internal)', validation: { isRequired: true } },
+        }),
+        name: bi('Album name shown on the site', { description: 'e.g. "Sunset Vibes" / "Atardecer"' }),
+        order: fields.integer({
+          label: 'Order',
+          description: 'Lower numbers show first in the album tabs.',
+          defaultValue: 100,
+        }),
+      },
+    }),
+
     photos: collection({
       label: 'Gallery photos',
       slugField: 'title',
@@ -48,6 +67,11 @@ export default config({
           name: { label: 'Title', description: 'Only for you — helps you find the photo here.' },
         }),
         image: image('Photo', 'gallery', 'JPG or WebP, ideally under 2 MB and about 2000px on the long side.'),
+        album: fields.relationship({
+          label: 'Album',
+          description: 'Which photoshoot this belongs to. Create albums under "Gallery albums".',
+          collection: 'albums',
+        }),
         alt: bi('Description', {
           description: 'What is in the photo, for screen readers and Google. e.g. "Ani playing guitar by the water".',
         }),

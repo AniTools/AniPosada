@@ -5,9 +5,20 @@ const bi = z.object({ en: z.string().default(''), es: z.string().default('') });
 
 const json = (dir: string) => glob({ pattern: '*.json', base: `./src/content/${dir}` });
 
+const albums = defineCollection({
+  loader: json('albums'),
+  schema: z.object({ title: z.string(), name: bi, order: z.number().default(100) }),
+});
+
 const photos = defineCollection({
   loader: json('photos'),
-  schema: z.object({ title: z.string(), image: z.string(), alt: bi, order: z.number().default(100) }),
+  schema: z.object({
+    title: z.string(),
+    image: z.string(),
+    album: z.string().nullish(),
+    alt: bi,
+    order: z.number().default(100),
+  }),
 });
 
 const videos = defineCollection({
@@ -57,4 +68,4 @@ const services = defineCollection({
   }),
 });
 
-export const collections = { photos, videos, releases, shows, services };
+export const collections = { albums, photos, videos, releases, shows, services };

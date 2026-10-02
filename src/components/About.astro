@@ -66,7 +66,7 @@ const t = useT(lang);
   }
   @media (min-width: 900px) {
     .about__grid {
-      grid-template-columns: 0.85fr 1fr;
+      grid-template-columns: minmax(0, 0.7fr) 1fr;
     }
     .about__photo {
       position: sticky;
@@ -78,12 +78,13 @@ const t = useT(lang);
     position: relative;
     isolation: isolate;
     margin: 0;
-    max-width: 520px;
+    max-width: min(400px, 80vw);
     width: 100%;
     justify-self: center;
   }
   .about__photo img {
     width: 100%;
+    height: auto;
     aspect-ratio: 4 / 5;
     object-fit: cover;
     object-position: 40% 35%;

@@ -18,6 +18,10 @@ export async function loadContent() {
   const newest = <T extends { data: { date: Date } }>(a: T, b: T) => +b.data.date - +a.data.date;
 
   const photos = (await getCollection('photos')).sort(byOrder);
+  // Only albums that actually have photos get a tab.
+  const albums = (await getCollection('albums'))
+    .sort(byOrder)
+    .filter((a) => photos.some((p) => p.data.album === a.id));
   const services = (await getCollection('services')).sort(byOrder);
   const releases = (await getCollection('releases')).sort(newest);
   const videos = (await getCollection('videos')).sort(newest);
@@ -32,6 +36,7 @@ export async function loadContent() {
 
   return {
     photos,
+    albums,
     services,
     releases,
     shows,

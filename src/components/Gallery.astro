@@ -7,9 +7,13 @@ import { pick } from '../lib/content';
 interface Props {
   lang: Lang;
   photos: CollectionEntry<'photos'>[];
+  albums: CollectionEntry<'albums'>[];
 }
-const { lang, photos } = Astro.props;
+const { lang, photos, albums } = Astro.props;
 const t = useT(lang);
+// Tabs only make sense once there's more than one shoot to choose from.
+const showTabs = albums.length > 1;
+const count = (id: string) => photos.filter((p) => p.data.album === id).length;
 ---
 
 {
@@ -21,10 +25,25 @@ const t = useT(lang);
           <h2 class="title">{t('gallery.title')}</h2>
         </header>
 
+        {showTabs && (
+          <div class="albums" role="group" aria-label={t('gallery.albums')} data-reveal>
+            <button type="button" class="album-tab" aria-pressed="true" data-album="all">
+              {t('gallery.all')}
+              <span>{photos.length}</span>
+            </button>
+            {albums.map((a) => (
+              <button type="button" class="album-tab" aria-pressed="false" data-album={a.id}>
+                {pick(a.data.name, lang) || a.data.title}
+                <span>{count(a.id)}</span>
+              </button>
+            ))}
+          </div>
+        )}
+
         <ul class="masonry" role="list" data-gallery>
           {photos.map((p, i) => (
-            <li data-reveal style={`--delay:${(i % 3) * 0.08}s`}>
-              <button type="button" data-index={i} aria-label={`${t('gallery.open')}: ${pick(p.data.alt, lang)}`}>
+            <li data-reveal data-album={p.data.album ?? ''} style={`--delay:${(i % 3) * 0.08}s`}>
+              <button type="button" aria-label={`${t('gallery.open')}: ${pick(p.data.alt, lang)}`}>
                 <img src={p.data.image} alt={pick(p.data.alt, lang)} loading="lazy" decoding="async" />
               </button>
             </li>
@@ -54,12 +73,64 @@ const t = useT(lang);
 }
 
 <style>
+  .albums {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: -1rem 0 2rem;
+  }
+  .album-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: none;
+    color: var(--cream);
+    font: 500 0.9375rem/1 var(--font-body);
+    cursor: pointer;
+    transition:
+      background 0.3s var(--ease),
+      color 0.3s var(--ease),
+      border-color 0.3s var(--ease);
+  }
+  .album-tab span {
+    font-size: 0.75rem;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+  .album-tab:hover {
+    border-color: var(--cream);
+  }
+  .album-tab[aria-pressed='true'] {
+    background: var(--sun);
+    border-color: var(--sun);
+    color: var(--ink);
+  }
+  .album-tab[aria-pressed='true'] span {
+    color: rgb(17 13 11 / 0.6);
+  }
+
   .masonry {
     columns: 3 280px;
     column-gap: clamp(0.75rem, 2vw, 1.25rem);
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+  .masonry li[hidden] {
+    display: none;
+  }
+  .masonry li.is-entering {
+    animation: photo-in 0.6s var(--ease) both;
+  }
+  @keyframes photo-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
   }
   .masonry li {
     break-inside: avoid;
@@ -139,6 +210,9 @@ const t = useT(lang);
     background: var(--sun);
     color: var(--ink);
   }
+  .lightbox__btn[hidden] {
+    display: none;
+  }
   .lightbox__close {
     top: 1rem;
     right: 1rem;
@@ -168,22 +242,45 @@ const t = useT(lang);
   const list = document.querySelector<HTMLElement>('[data-gallery]');
   const box = document.querySelector<HTMLDialogElement>('[data-lightbox]');
   if (list && box) {
-    const items = [...list.querySelectorAll<HTMLImageElement>('img')];
+    const all = [...list.querySelectorAll<HTMLLIElement>('li')];
     const img = box.querySelector<HTMLImageElement>('[data-lightbox-img]')!;
     const caption = box.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+    // The viewer only steps through the photos of the album being shown.
+    let items: HTMLImageElement[] = [];
     let index = 0;
+    const visible = () => all.filter((li) => !li.hidden).map((li) => li.querySelector('img')!);
 
     const show = (i: number) => {
       index = (i + items.length) % items.length;
       img.src = items[index].currentSrc || items[index].src;
       img.alt = items[index].alt;
       caption.textContent = items[index].alt;
+      box.querySelectorAll<HTMLElement>('[data-prev], [data-next]').forEach((b) => (b.hidden = items.length < 2));
     };
 
+    // Album tabs
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('.album-tab')];
+    tabs.forEach((tab) =>
+      tab.addEventListener('click', () => {
+        const album = tab.dataset.album;
+        tabs.forEach((t) => t.setAttribute('aria-pressed', String(t === tab)));
+        all.forEach((li) => {
+          const match = album === 'all' || li.dataset.album === album;
+          li.hidden = !match;
+          li.classList.remove('is-entering');
+          if (match) {
+            void li.offsetWidth; // restart the fade-in
+            li.classList.add('is-entering', 'is-visible');
+          }
+        });
+      })
+    );
+
     list.addEventListener('click', (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-index]');
-      if (!btn) return;
-      show(Number(btn.dataset.index));
+      const li = (e.target as HTMLElement).closest('li');
+      if (!li) return;
+      items = visible();
+      show(items.indexOf(li.querySelector('img')!));
       box.showModal();
       document.body.style.overflow = 'hidden';
     });
