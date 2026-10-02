@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import Icon from './Icon.astro';
 import { useT, type Lang } from '../i18n/ui';
 import { pick } from '../lib/content';
+import { googleCalendarUrl } from '../lib/calendar';
 
 interface Props {
   lang: Lang;
@@ -11,6 +12,8 @@ interface Props {
 const { lang, shows } = Astro.props;
 const t = useT(lang);
 const locale = lang === 'en' ? 'en-CA' : 'es-CO';
+const calendarDetails = (s: CollectionEntry<'shows'>) =>
+  [s.data.time, pick(s.data.note, lang), s.data.link ?? ''].filter(Boolean).join('\n');
 const part = (date: string, opts: Intl.DateTimeFormatOptions) =>
   new Intl.DateTimeFormat(locale, { ...opts, timeZone: 'UTC' }).format(new Date(`${date}T00:00:00Z`));
 ---
@@ -41,12 +44,30 @@ const part = (date: string, opts: Intl.DateTimeFormatOptions) =>
                   {[s.data.time, pick(s.data.note, lang)].filter(Boolean).join(' · ')}
                 </p>
               </div>
-              {s.data.link && (
-                <a class="btn" href={s.data.link} target="_blank" rel="noopener">
-                  {t('shows.tickets')}
-                  <Icon name="arrow-up-right" size={16} />
-                </a>
-              )}
+              <div class="show__actions">
+                <details class="cal">
+                  <summary class="btn">
+                    <Icon name="calendar-plus" size={17} />
+                    {t('shows.calendar')}
+                  </summary>
+                  <div class="cal__menu">
+                    <a href={googleCalendarUrl(s, calendarDetails(s))} target="_blank" rel="noopener">
+                      <Icon name="arrow-up-right" size={15} />
+                      {t('shows.google')}
+                    </a>
+                    <a href={`/shows/${s.id}.ics`} download={`aniposada-${s.id}.ics`}>
+                      <Icon name="download" size={15} />
+                      {t('shows.ics')}
+                    </a>
+                  </div>
+                </details>
+                {s.data.link && (
+                  <a class="btn" href={s.data.link} target="_blank" rel="noopener">
+                    {t('shows.tickets')}
+                    <Icon name="arrow-up-right" size={16} />
+                  </a>
+                )}
+              </div>
             </li>
           ))}
         </ul>
@@ -74,16 +95,75 @@ const part = (date: string, opts: Intl.DateTimeFormatOptions) =>
   .show:hover {
     background: linear-gradient(90deg, rgb(245 162 122 / 0.06), transparent);
   }
-  .show .btn {
+  .show__actions {
     grid-column: 1 / -1;
-    justify-self: start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
   }
   @media (min-width: 720px) {
     .show {
       grid-template-columns: 9rem 1fr auto;
     }
-    .show .btn {
+    .show__actions {
       grid-column: auto;
+      justify-content: flex-end;
+    }
+  }
+
+  .cal {
+    position: relative;
+  }
+  .cal summary {
+    list-style: none;
+  }
+  .cal summary::-webkit-details-marker {
+    display: none;
+  }
+  .cal[open] summary {
+    border-color: var(--sun);
+    color: var(--sun);
+  }
+  .cal__menu {
+    position: absolute;
+    z-index: 5;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    display: grid;
+    min-width: 15rem;
+    padding: 0.4rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--ink-3);
+    box-shadow: 0 24px 50px -20px rgb(0 0 0 / 0.8);
+    animation: menu-in 0.25s var(--ease);
+  }
+  @media (min-width: 720px) {
+    .cal__menu {
+      left: auto;
+      right: 0;
+    }
+  }
+  .cal__menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .cal__menu a:hover {
+    background: rgb(245 162 122 / 0.14);
+  }
+  .cal__menu :global(svg) {
+    color: var(--sun);
+  }
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
     }
   }
   .show__date {
@@ -127,6 +207,17 @@ const part = (date: string, opts: Intl.DateTimeFormatOptions) =>
 </style>
 
 <script>
+  // Close an open calendar menu when clicking elsewhere or pressing Escape.
+  const menus = [...document.querySelectorAll<HTMLDetailsElement>('details.cal')];
+  document.addEventListener('click', (e) => {
+    menus.forEach((m) => {
+      if (m.open && !m.contains(e.target as Node)) m.open = false;
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') menus.forEach((m) => (m.open = false));
+  });
+
   // Hide shows that have passed since the last deploy.
   const today = new Date().toISOString().slice(0, 10);
   const section = document.querySelector<HTMLElement>('[data-shows]');

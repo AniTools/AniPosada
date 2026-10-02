@@ -19,3 +19,9 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Show calendar files (/shows/<show>.ics) open in Apple Calendar, Outlook, etc.
+[[headers]]
+  for = "/shows/*"
+  [headers.values]
+    Content-Type = "text/calendar; charset=utf-8"

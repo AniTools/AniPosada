@@ -22,7 +22,8 @@ With `npm run dev` running, open **http://localhost:4321/keystatic**:
 | Gallery photos   | Upload a photo, pick its album, add a short description (EN/ES).    |
 | Videos           | Paste a YouTube link. Tick "Feature" to show it big at the top.      |
 | Releases         | Cover art + Spotify / Apple Music / YouTube links.                   |
-| Shows            | Date, venue, city, ticket link. Past shows hide themselves.          |
+| Shows            | Date, venue, city, time, ticket link. Past shows hide themselves.    |
+|                  | Each show gets “Add to calendar” (Google + Apple/Outlook) automatically; times are Vancouver time, 2 hours long. |
 | Services         | Title + description in both languages, and an icon.                 |
 | Site settings    | Hero text & photo, About text & photo, quick facts, phone, socials.  |
 
