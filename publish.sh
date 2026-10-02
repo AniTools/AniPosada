@@ -2,6 +2,7 @@
 # Publishes your latest changes (CMS edits, code, anything) to the live site.
 #
 # What it does:
+#   0. Optimizes any newly uploaded photos (JPG/PNG → WebP)
 #   1. Shows you exactly what changed — added, edited, and deleted files
 #   2. Asks you to confirm before doing anything
 #   3. Commits everything with a message (today's date by default, or your own)
@@ -12,6 +13,9 @@
 #   ./publish.sh "Added new project"    (your own message)
 
 cd "$(dirname "$0")" || exit 1
+
+# Shrink any new photos (JPG/PNG uploaded through /keystatic) to web-sized WebP.
+npm run images --silent || exit 1
 
 if [ -z "$(git status --porcelain)" ]; then
   echo "Nothing to publish — no changes since your last push."

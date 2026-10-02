@@ -1,7 +1,9 @@
 ---
 import '../styles/global.css';
 import { useT, type Lang } from '../i18n/ui';
-import { site } from '../lib/content';
+import { getCollection } from 'astro:content';
+import { site, pick } from '../lib/content';
+import { isoRange, location } from '../lib/calendar';
 
 interface Props {
   lang: Lang;
@@ -12,18 +14,49 @@ const t = useT(lang);
 const enUrl = new URL('/', Astro.site);
 const esUrl = new URL('/es/', Astro.site);
 const canonical = lang === 'en' ? enUrl : esUrl;
-const ogImage = new URL(site.heroImage, Astro.site);
+const ogImage = new URL('/og-image.jpg', Astro.site);
 
-const jsonLd = {
-  '@context': 'https://schema.org',
+/* Structured data: who Ani is, plus each upcoming show as an event so Google
+   can list them in event search results. */
+const artist = {
   '@type': 'MusicGroup',
+  '@id': `${enUrl.href}#artist`,
   name: 'Aniposada',
   alternateName: 'Ana María Posada',
   url: enUrl.href,
-  image: ogImage.href,
+  image: new URL(site.heroImage, Astro.site).href,
+  description: t('meta.description'),
   genre: ['Latin', 'Singer-songwriter', 'Acoustic'],
+  foundingLocation: 'Colombia',
   sameAs: site.socials.map((s) => s.url),
 };
+const today = new Date().toISOString().slice(0, 10);
+const events = (await getCollection('shows'))
+  .filter((s) => s.data.date >= today)
+  .map((s) => {
+    const { start, end } = isoRange(s);
+    const note = pick(s.data.note, lang);
+    return {
+      '@type': 'MusicEvent',
+      name: `Aniposada — ${s.data.title}`,
+      startDate: start,
+      ...(end ? { endDate: end } : {}),
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      location: {
+        '@type': 'Place',
+        name: s.data.venue || s.data.title,
+        address: { '@type': 'PostalAddress', streetAddress: s.data.venue, addressLocality: s.data.city, addressCountry: 'CA' },
+      },
+      image: ogImage.href,
+      description: note || `${s.data.title} — ${location(s)}`,
+      performer: { '@id': `${enUrl.href}#artist` },
+      ...(/free|libre|gratis/i.test(s.data.note.en + s.data.note.es)
+        ? { isAccessibleForFree: true, offers: { '@type': 'Offer', price: 0, priceCurrency: 'CAD', availability: 'https://schema.org/InStock', url: s.data.link || canonical.href } }
+        : s.data.link ? { offers: { '@type': 'Offer', url: s.data.link, availability: 'https://schema.org/InStock' } } : {}),
+    };
+  });
+const jsonLd = { '@context': 'https://schema.org', '@graph': [artist, ...events] };
 ---
 
 <!doctype html>
@@ -34,7 +67,10 @@ const jsonLd = {
     <title>{t('meta.title')}</title>
     <meta name="description" content={t('meta.description')} />
     <meta name="theme-color" content="#110d0b" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="canonical" href={canonical.href} />
     <link rel="alternate" hreflang="en" href={enUrl.href} />
     <link rel="alternate" hreflang="es" href={esUrl.href} />
@@ -47,8 +83,15 @@ const jsonLd = {
     <meta property="og:description" content={t('meta.description')} />
     <meta property="og:url" content={canonical.href} />
     <meta property="og:image" content={ogImage.href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Aniposada — Singer-Songwriter & Producer" />
     <meta property="og:locale" content={lang === 'en' ? 'en_CA' : 'es_CO'} />
+    <meta property="og:locale:alternate" content={lang === 'en' ? 'es_CO' : 'en_CA'} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t('meta.title')} />
+    <meta name="twitter:description" content={t('meta.description')} />
+    <meta name="twitter:image" content={ogImage.href} />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script is:inline>document.documentElement.classList.add('js');</script>

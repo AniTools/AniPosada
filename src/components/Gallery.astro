@@ -6,7 +6,7 @@ import { pick } from '../lib/content';
 
 interface Props {
   lang: Lang;
-  photos: CollectionEntry<'photos'>[];
+  photos: (CollectionEntry<'photos'> & { size: { width?: number; height?: number } })[];
   albums: CollectionEntry<'albums'>[];
 }
 const { lang, photos, albums } = Astro.props;
@@ -44,7 +44,14 @@ const count = (id: string) => photos.filter((p) => p.data.album === id).length;
           {photos.map((p, i) => (
             <li data-reveal data-album={p.data.album ?? ''} style={`--delay:${(i % 3) * 0.08}s`}>
               <button type="button" aria-label={`${t('gallery.open')}: ${pick(p.data.alt, lang)}`}>
-                <img src={p.data.image} alt={pick(p.data.alt, lang)} loading="lazy" decoding="async" />
+                <img
+                  src={p.data.image}
+                  alt={pick(p.data.alt, lang)}
+                  width={p.size.width}
+                  height={p.size.height}
+                  loading="lazy"
+                  decoding="async"
+                />
               </button>
             </li>
           ))}

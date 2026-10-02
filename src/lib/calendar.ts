@@ -35,6 +35,21 @@ function range(show: Show) {
   return { allDay: false, start: fmt(start), end: fmt(end) };
 }
 
+/** ISO 8601 start/end with the Vancouver UTC offset for that date (for Google's event data). */
+export function isoRange(show: Show) {
+  const t = parseTime(show.data.time);
+  if (!t) return { start: show.data.date, end: undefined };
+  const offset = (date: Date) =>
+    new Intl.DateTimeFormat('en-US', { timeZone: TIMEZONE, timeZoneName: 'longOffset' })
+      .formatToParts(date)
+      .find((p) => p.type === 'timeZoneName')!
+      .value.replace('GMT', '') || '+00:00';
+  const local = `${show.data.date}T${pad(t[0])}:${pad(t[1])}:00`;
+  const off = offset(new Date(`${local}Z`));
+  const endLocal = new Date(new Date(`${local}Z`).getTime() + DEFAULT_HOURS * 3600_000).toISOString().slice(0, 19);
+  return { start: `${local}${off}`, end: `${endLocal}${off}` };
+}
+
 export const location = (show: Show) => [show.data.venue, show.data.city].filter(Boolean).join(', ');
 
 export function googleCalendarUrl(show: Show, details: string) {

@@ -23,7 +23,8 @@ const marquee =
     <div class="hero__copy">
       <p class="eyebrow hero__in" style="--d:0.1s">{pick(site.tagline, lang)}</p>
       <h1 id="hero-title" class="hero__title hero__in" style="--d:0.2s">
-        <Logo variant="wordmark" class="hero__wordmark" label="Aniposada" />
+        <span class="sr-only">Aniposada — {pick(site.tagline, lang)}</span>
+        <Logo variant="wordmark" class="hero__wordmark" label="" />
       </h1>
       <p class="hero__intro hero__in" style="--d:0.35s">{pick(site.intro, lang)}</p>
       <div class="hero__ctas hero__in" style="--d:0.45s">

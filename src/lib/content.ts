@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import sharp from 'sharp';
 import site from '../content/site.json';
 import type { Lang } from '../i18n/ui';
 
@@ -17,7 +18,13 @@ export async function loadContent() {
   const byOrder = <T extends { data: { order: number } }>(a: T, b: T) => a.data.order - b.data.order;
   const newest = <T extends { data: { date: Date } }>(a: T, b: T) => +b.data.date - +a.data.date;
 
-  const photos = (await getCollection('photos')).sort(byOrder);
+  // Read each photo's real size so the gallery can reserve space (no layout jump).
+  const photos = await Promise.all(
+    (await getCollection('photos')).sort(byOrder).map(async (p) => {
+      const meta = await sharp(`public${p.data.image}`).metadata().catch(() => ({ width: undefined, height: undefined }));
+      return Object.assign(p, { size: { width: meta.width, height: meta.height } });
+    })
+  );
   // Only albums that actually have photos get a tab.
   const albums = (await getCollection('albums'))
     .sort(byOrder)

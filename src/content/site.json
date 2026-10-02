@@ -7,7 +7,7 @@
     "en": "Colombian roots, Canadian home. Heartfelt songs about love, spirituality and the causes that move us.",
     "es": "Raíces colombianas, hogar en Canadá. Canciones sentidas sobre el amor, la espiritualidad y las causas que nos mueven."
   },
-  "heroImage": "/images/site/hero.jpg",
+  "heroImage": "/images/site/hero.webp",
   "spotifyArtistId": "3y07edW00OFsOMDrDvL5Xk",
   "aboutHeading": {
     "en": "Who is Ani?",
@@ -31,7 +31,7 @@
       "es": "Habilidosa en el piano, la guitarra y el ukelele, los une en melodías dulces y emotivas que perduran en el alma. Actualmente trabaja en nueva música — mantente atento."
     }
   ],
-  "aboutImage": "/images/site/about.jpg",
+  "aboutImage": "/images/site/about.webp",
   "facts": [
     {
       "label": {
