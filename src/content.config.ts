@@ -36,7 +36,8 @@ const releases = defineCollection({
 const shows = defineCollection({
   loader: json('shows'),
   schema: z.object({
-    venue: z.string(),
+    title: z.string(),
+    venue: z.string().default(''),
     date: z.string(),
     time: z.string().default(''),
     city: z.string(),

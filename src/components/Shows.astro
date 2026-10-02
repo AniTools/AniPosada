@@ -32,12 +32,13 @@ const part = (date: string, opts: Intl.DateTimeFormatOptions) =>
                 <span class="show__month">{part(s.data.date, { month: 'short', year: 'numeric' })}</span>
               </p>
               <div class="show__info">
-                <h3 class="show__venue">{s.data.venue}</h3>
-                <p class="show__meta">
-                  <Icon name="map-pin" size={14} />
-                  {s.data.city}
-                  {s.data.time && <span>· {s.data.time}</span>}
-                  {pick(s.data.note, lang) && <span>· {pick(s.data.note, lang)}</span>}
+                <h3 class="show__venue">{s.data.title}</h3>
+                <p class="show__place">
+                  <Icon name="map-pin" size={15} />
+                  <span>{[s.data.venue, s.data.city].filter(Boolean).join(', ')}</span>
+                </p>
+                <p class="show__details">
+                  {[s.data.time, pick(s.data.note, lang)].filter(Boolean).join(' · ')}
                 </p>
               </div>
               {s.data.link && (
@@ -105,11 +106,21 @@ const part = (date: string, opts: Intl.DateTimeFormatOptions) =>
     font-size: clamp(1.6rem, 3vw, 2.25rem);
     margin-bottom: 0.4rem;
   }
-  .show__meta {
+  .show__place {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.4rem;
+    align-items: flex-start;
+    gap: 0.45rem;
+    color: var(--cream);
+    font-size: 0.9375rem;
+  }
+  .show__place :global(svg) {
+    flex: none;
+    margin-top: 0.3em;
+    color: var(--sun);
+  }
+  .show__details {
+    margin-top: 0.2rem;
+    padding-left: 1.4rem;
     color: var(--muted);
     font-size: 0.9375rem;
   }

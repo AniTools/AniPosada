@@ -108,12 +108,15 @@ export default config({
 
     shows: collection({
       label: 'Shows',
-      slugField: 'venue',
+      slugField: 'title',
       path: 'src/content/shows/*',
       format: { data: 'json' },
-      columns: ['venue', 'date'],
+      columns: ['title', 'date'],
       schema: {
-        venue: fields.slug({ name: { label: 'Venue', validation: { isRequired: true } } }),
+        title: fields.slug({
+          name: { label: 'Show name', description: 'e.g. "The Book Fair 2026"', validation: { isRequired: true } },
+        }),
+        venue: fields.text({ label: 'Venue / address', description: 'e.g. "Ocean Artworks Pavilion, 1531 Johnston St"' }),
         date: fields.date({
           label: 'Date',
           description: 'Past shows hide themselves automatically.',
