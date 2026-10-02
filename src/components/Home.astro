@@ -8,6 +8,7 @@ import About from './About.astro';
 import Gallery from './Gallery.astro';
 import Shows from './Shows.astro';
 import Services from './Services.astro';
+import Support from './Support.astro';
 import Contact from './Contact.astro';
 import Footer from './Footer.astro';
 import { loadContent } from '../lib/content';
@@ -31,6 +32,7 @@ const { photos, albums, services, releases, shows, featured, otherVideos } = awa
     <Gallery lang={lang} photos={photos} albums={albums} />
     <Shows lang={lang} shows={shows} />
     <Services lang={lang} services={services} />
+    <Support lang={lang} />
     <Contact lang={lang} />
   </main>
   <Footer lang={lang} />

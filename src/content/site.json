@@ -80,5 +80,14 @@
       "platform": "spotify",
       "url": "https://open.spotify.com/artist/3y07edW00OFsOMDrDvL5Xk"
     }
-  ]
+  ],
+  "supportUrl": "",
+  "supportHeading": {
+    "en": "Fuel the next song",
+    "es": "Impulsa la próxima canción"
+  },
+  "supportBody": {
+    "en": "Every coffee helps me write, record and share new music independently. If my songs have meant something to you, you can be part of what comes next.",
+    "es": "Cada café me ayuda a escribir, grabar y compartir nueva música de forma independiente. Si mis canciones han significado algo para ti, puedes ser parte de lo que viene."
+  }
 }

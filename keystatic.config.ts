@@ -212,6 +212,13 @@ export default config({
           }
         ),
         bookingUrl: fields.url({ label: 'Book-a-call link', validation: { isRequired: false } }),
+        supportUrl: fields.url({
+          label: 'Buy Me a Coffee link',
+          description: 'e.g. https://buymeacoffee.com/yourname. Leave empty to hide the Support section.',
+          validation: { isRequired: false },
+        }),
+        supportHeading: bi('Support heading'),
+        supportBody: bi('Support text', { multiline: true }),
         phone: fields.text({ label: 'Phone' }),
         email: fields.text({
           label: 'Email',

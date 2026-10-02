@@ -26,6 +26,14 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
           </a>
         ))
       }
+      {
+        site.supportUrl && (
+          <a href={site.supportUrl} target="_blank" rel="noopener">
+            <Icon name="coffee" size={15} />
+            {t('support.footer')}
+          </a>
+        )
+      }
       <a href={homePath(other)} hreflang={other}>{t('lang.switch')}</a>
       <a href="#top" class="footer__top">
         {t('footer.top')}
