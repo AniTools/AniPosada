@@ -56,6 +56,12 @@ const count = (id: string) => photos.filter((p) => p.data.album === id).length;
             </li>
           ))}
         </ul>
+
+        <div class="gallery__more-wrap">
+          <button type="button" class="btn gallery__more" data-more hidden data-show={t('gallery.more')} data-hide={t('gallery.less')}>
+            <span data-more-label>{t('gallery.more')}</span>
+          </button>
+        </div>
       </div>
 
       <dialog class="lightbox" data-lightbox aria-label={t('gallery.title')}>
@@ -126,6 +132,30 @@ const count = (id: string) => photos.filter((p) => p.data.album === id).length;
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+  /* Phones: two tighter columns so the gallery isn't one long scroll. */
+  @media (max-width: 640px) {
+    .masonry {
+      columns: 2;
+      column-gap: 0.5rem;
+    }
+    .masonry li {
+      margin-bottom: 0.5rem !important;
+    }
+    .masonry button {
+      border-radius: 8px;
+    }
+  }
+  .masonry li.is-extra {
+    display: none;
+  }
+  .gallery__more-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  .gallery__more[hidden] {
+    display: none;
   }
   .masonry li[hidden] {
     display: none;
@@ -265,6 +295,25 @@ const count = (id: string) => photos.filter((p) => p.data.album === id).length;
       box.querySelectorAll<HTMLElement>('[data-prev], [data-next]').forEach((b) => (b.hidden = items.length < 2));
     };
 
+    // Show a few photos first (6 on phones, 9 on bigger screens), then "Show all".
+    const more = document.querySelector<HTMLButtonElement>('[data-more]')!;
+    const moreLabel = more.querySelector<HTMLElement>('[data-more-label]')!;
+    const limit = () => (matchMedia('(max-width: 640px)').matches ? 6 : 9);
+    let expanded = false;
+    const applyLimit = () => {
+      const shown = all.filter((li) => !li.hidden);
+      shown.forEach((li, i) => li.classList.toggle('is-extra', !expanded && i >= limit()));
+      more.hidden = shown.length <= limit();
+      moreLabel.textContent = expanded ? more.dataset.hide! : `${more.dataset.show} (${shown.length})`;
+    };
+    more.addEventListener('click', () => {
+      expanded = !expanded;
+      applyLimit();
+      if (!expanded) document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' });
+    });
+    matchMedia('(max-width: 640px)').addEventListener('change', applyLimit);
+    applyLimit();
+
     // Album tabs
     const tabs = [...document.querySelectorAll<HTMLButtonElement>('.album-tab')];
     tabs.forEach((tab) =>
@@ -280,6 +329,8 @@ const count = (id: string) => photos.filter((p) => p.data.album === id).length;
             li.classList.add('is-entering', 'is-visible');
           }
         });
+        expanded = false;
+        applyLimit();
       })
     );
 

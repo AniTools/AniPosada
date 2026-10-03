@@ -13,3 +13,6 @@ photo-inbox/**/*
 !photo-inbox/README.md
 !photo-inbox/**/.gitkeep
 !photo-inbox/*/
+
+# Print files (business cards etc.) — kept locally, not published
+print/
