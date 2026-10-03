@@ -2,7 +2,7 @@
 # Publishes your latest changes (CMS edits, code, anything) to the live site.
 #
 # What it does:
-#   0. Optimizes any newly uploaded photos (JPG/PNG → WebP)
+#   0. Adds photos from photo-inbox/ and optimizes new photos (→ WebP)
 #   1. Shows you exactly what changed — added, edited, and deleted files
 #   2. Asks you to confirm before doing anything
 #   3. Commits everything with a message (today's date by default, or your own)
@@ -14,6 +14,8 @@
 
 cd "$(dirname "$0")" || exit 1
 
+# Add any photos dropped into photo-inbox/ to the gallery.
+npm run photos --silent || exit 1
 # Shrink any new photos (JPG/PNG uploaded through /keystatic) to web-sized WebP.
 npm run images --silent || exit 1
 

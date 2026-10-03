@@ -6,3 +6,10 @@ dist/
 *.log
 .env
 .env.production
+
+# Raw photos waiting in the inbox are never committed — publish.sh imports
+# them (resized WebP) into the gallery first.
+photo-inbox/**/*
+!photo-inbox/README.md
+!photo-inbox/**/.gitkeep
+!photo-inbox/*/

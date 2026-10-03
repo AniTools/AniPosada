@@ -56,7 +56,20 @@ const events = (await getCollection('shows'))
         : s.data.link ? { offers: { '@type': 'Offer', url: s.data.link, availability: 'https://schema.org/InStock' } } : {}),
     };
   });
-const jsonLd = { '@context': 'https://schema.org', '@graph': [artist, ...events] };
+/* Photo credit/copyright, so Google Images can show "Credit: Aniposada". */
+const photoCredit = {
+  creator: { '@id': `${enUrl.href}#artist` },
+  creditText: 'Aniposada',
+  copyrightNotice: `© ${new Date().getFullYear()} Aniposada`,
+  copyrightHolder: { '@id': `${enUrl.href}#artist` },
+};
+const photos = (await getCollection('photos')).map((p) => ({
+  '@type': 'ImageObject',
+  contentUrl: new URL(p.data.image, Astro.site).href,
+  caption: pick(p.data.alt, lang),
+  ...photoCredit,
+}));
+const jsonLd = { '@context': 'https://schema.org', '@graph': [artist, ...events, ...photos] };
 ---
 
 <!doctype html>
