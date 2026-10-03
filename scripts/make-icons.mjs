@@ -24,6 +24,9 @@ const tile = (size, radius) => `
 const png = (svg) => sharp(Buffer.from(svg)).png();
 await png(tile(180, 0)).resize(180, 180).toFile('public/apple-touch-icon.png'); // iOS rounds corners itself
 await png(tile(192, 96)).resize(192, 192).toFile('public/icon-192.png');
+// Google Search shows favicons sized in multiples of 48px.
+await png(tile(48, 96)).resize(48, 48).toFile('public/favicon-48.png');
+await png(tile(96, 96)).resize(96, 96).toFile('public/favicon-96.png');
 await png(tile(512, 96)).resize(512, 512).toFile('public/icon-512.png');
 await png(tile(512, 0)).resize(512, 512).toFile('public/icon-maskable.png');
 
