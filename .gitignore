@@ -16,3 +16,7 @@ photo-inbox/**/*
 
 # Print files (business cards etc.) — kept locally, not published
 print/
+
+# Raw photo drops / zips — never published
+_Fotos/
+*.zip
