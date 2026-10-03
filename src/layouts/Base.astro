@@ -46,11 +46,11 @@ const events = (await getCollection('shows'))
       location: {
         '@type': 'Place',
         name: s.data.venue || s.data.title,
-        address: { '@type': 'PostalAddress', streetAddress: s.data.venue, addressLocality: s.data.city, addressCountry: 'CA' },
+        address: { '@type': 'PostalAddress', streetAddress: s.data.venue, addressLocality: s.data.city, addressRegion: 'BC', addressCountry: 'CA' },
       },
       image: ogImage.href,
       description: note || `${s.data.title} — ${location(s)}`,
-      performer: { '@id': `${enUrl.href}#artist` },
+      performer: { '@type': 'MusicGroup', '@id': `${enUrl.href}#artist`, name: 'Aniposada', url: enUrl.href },
       ...(/free|libre|gratis/i.test(s.data.note.en + s.data.note.es)
         ? { isAccessibleForFree: true, offers: { '@type': 'Offer', price: 0, priceCurrency: 'CAD', availability: 'https://schema.org/InStock', url: s.data.link || canonical.href } }
         : s.data.link ? { offers: { '@type': 'Offer', url: s.data.link, availability: 'https://schema.org/InStock' } } : {}),
@@ -62,6 +62,8 @@ const photoCredit = {
   creditText: 'Aniposada',
   copyrightNotice: `© ${new Date().getFullYear()} Aniposada`,
   copyrightHolder: { '@id': `${enUrl.href}#artist` },
+  // Anyone wanting to use a photo is pointed to the contact form.
+  acquireLicensePage: `${canonical.href}#contact`,
 };
 const photos = (await getCollection('photos')).map((p) => ({
   '@type': 'ImageObject',
