@@ -26,7 +26,7 @@ const marquee =
         <span class="sr-only">Aniposada — {pick(site.tagline, lang)}</span>
         <Logo variant="wordmark" class="hero__wordmark" label="" />
       </h1>
-      <p class="hero__intro hero__in" style="--d:0.35s">{pick(site.intro, lang)}</p>
+      {pick(site.intro, lang) && <p class="hero__intro hero__in" style="--d:0.35s">{pick(site.intro, lang)}</p>}
       <div class="hero__ctas hero__in" style="--d:0.45s">
         <a class="btn btn--sun" href="#music">
           <Icon name="play" size={16} />
