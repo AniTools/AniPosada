@@ -190,7 +190,7 @@ export default config({
       format: { data: 'json' },
       schema: {
         tagline: bi('Hero tagline', { description: 'Under your name at the top.' }),
-        intro: bi('Hero intro', { multiline: true }),
+        intro: bi('Hero quote', { multiline: true }),
         heroImage: image('Hero photo', 'site'),
         spotifyArtistId: fields.text({
           label: 'Spotify artist ID',
